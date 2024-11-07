@@ -11,10 +11,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Animator playerAnim;
 
+
     [Header("Movement")]
-    public float runAcceleration = 0.25f;
-    public float drag = 0.1f;
-    public float runSpeed = 4f;
+    public float runAcceleration;
+    public float drag;
+    public float runSpeed;
+    [SerializeField] float sprintMult;
+
+    private float gravity = -9.81f;
+    [SerializeField] float gravMult = 3;
+    private float verticalVelocity = 0;
+    [SerializeField] float jumpStrength;
+    private float coyoteTime;
+    private float coyoteThreshold = 1.0f;
+
+    private Vector3 movementToApply;
+
 
     [Header("Camera")]
     public float turnSmoothTime = 0.1f;
@@ -35,29 +47,14 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        //calculate move forward in camera direction
-        Vector3 cameraForwardXZ = new Vector3(playerCamera.transform.forward.x, 0, playerCamera.transform.forward.z).normalized;
-        Vector3 cameraRightXZ = new Vector3(playerCamera.transform.right.x, 0, playerCamera.transform.right.z).normalized;
-        Vector3 moveDirection = cameraRightXZ * playerLocomotionInput.MovementInput.x + cameraForwardXZ * playerLocomotionInput.MovementInput.y;
+        movementToApply = new Vector3(0, 0, 0);
+        HandleGravity();
+        HandleJump();
+        HandleCameraAndMovement();
 
-        Vector3 moveDelta = moveDirection * runAcceleration * Time.deltaTime;
-        Vector3 newVel = characterController.velocity + moveDelta;
-
-        //apply drag
-        Vector3 curDrag = newVel.normalized * drag * Time.deltaTime;
-        newVel = (newVel.magnitude > drag * Time.deltaTime) ? newVel - curDrag : Vector3.zero;
-        newVel = Vector3.ClampMagnitude(newVel, runSpeed);
-
-        //move player
-        characterController.Move(newVel * Time.deltaTime);
-        //when player moving, set animation
+        //set animation parameters
         playerAnim.SetBool("isWalking", (playerLocomotionInput.MovementInput.magnitude > 0.1f));
-
-        //jump
-        if(playerLocomotionInput.JumpPressed)
-        {
-            //ToDo Add Jump
-        }
+        playerAnim.SetBool("isSprinting", (playerLocomotionInput.SprintInput > 0.1f));
     }
 
     //calculate camera after movement
@@ -74,4 +71,62 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, smoothedAngle, 0f);
         }
     }
+
+    private void HandleGravity()//calculate downward force
+    {
+        if(characterController.isGrounded && verticalVelocity < 0)//if on the floor and moving downwards
+        {
+            verticalVelocity = -1;
+        }
+        else
+        {
+            verticalVelocity += gravity * gravMult * Time.deltaTime;
+        }
+    }
+
+    private void HandleCameraAndMovement()
+    {
+        //calculate move forward in camera direction
+        Vector3 cameraForwardXZ = new Vector3(playerCamera.transform.forward.x, 0, playerCamera.transform.forward.z).normalized;
+        Vector3 cameraRightXZ = new Vector3(playerCamera.transform.right.x, 0, playerCamera.transform.right.z).normalized;
+        Vector3 moveDirection = cameraRightXZ * playerLocomotionInput.MovementInput.x + cameraForwardXZ * playerLocomotionInput.MovementInput.y;
+
+        Vector3 moveDelta = moveDirection * runAcceleration * Time.deltaTime * ((playerLocomotionInput.SprintInput > 0.1f) ? sprintMult : 1);//if sprinting, multiply acceleration
+        Vector3 newVel = characterController.velocity + moveDelta;
+        newVel.y = 0;//no vertical speed limit
+
+        //apply drag
+        Vector3 curDrag = newVel.normalized * drag * Time.deltaTime;
+        newVel = (newVel.magnitude > drag * Time.deltaTime) ? newVel - curDrag : Vector3.zero;
+        newVel = (playerLocomotionInput.SprintInput > 0.1f) ? Vector3.ClampMagnitude(newVel, runSpeed * sprintMult) : Vector3.ClampMagnitude(newVel, runSpeed);//if sprinting, multiply speed when clamping
+
+        //apply movement
+        movementToApply += newVel;
+        movementToApply.y += verticalVelocity;//and gravity and jump
+        //move player
+        characterController.Move(movementToApply * Time.deltaTime);
+    }
+
+    private void HandleJump()
+    {
+        //coyote time check
+        if(characterController.isGrounded)
+        {
+            coyoteTime = 0;
+        }
+        else
+        {
+            coyoteTime += Time.deltaTime;
+        }
+        //jump
+        if(playerLocomotionInput.JumpPressed)
+        {
+            if(coyoteTime <= coyoteThreshold)//if on ground or in coyote time
+            {
+                coyoteTime = 10;
+                verticalVelocity = jumpStrength;
+            }
+        }
+    }
+
 }
