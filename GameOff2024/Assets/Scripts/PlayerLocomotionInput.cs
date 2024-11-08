@@ -11,6 +11,7 @@ public class PlayerLocomotionInput : MonoBehaviour, CarControls.IPlayerLocomotio
     public Vector2 LookInput { get; private set; }
     public bool JumpPressed { get; private set; }
     public float SprintInput { get; private set; }
+    public bool AttackPressed { get; private set; }
 
     //Set up input system
     private void OnEnable()
@@ -31,6 +32,7 @@ public class PlayerLocomotionInput : MonoBehaviour, CarControls.IPlayerLocomotio
     private void LateUpdate()
     {
         JumpPressed = false;//stop jumping
+        AttackPressed = false;//stop attacking
     }
 
     //Detect movement
@@ -56,5 +58,14 @@ public class PlayerLocomotionInput : MonoBehaviour, CarControls.IPlayerLocomotio
     public void OnSprint(InputAction.CallbackContext context)
     {
         SprintInput = context.ReadValue<float>();
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if(!context.performed)
+        {
+            return;
+        }
+        AttackPressed = true;
     }
 }

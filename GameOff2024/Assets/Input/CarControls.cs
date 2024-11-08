@@ -49,6 +49,14 @@ public class @CarControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""c61ef515-ed56-4c97-9f7a-eb81050ad2a0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -227,6 +235,28 @@ public class @CarControls : IInputActionCollection, IDisposable
                     ""action"": ""Sprint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4e912a74-b9e3-44ee-8aeb-2d09f2497b1b"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3a28b1e-fdd3-4593-972e-5809e313eac9"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -239,6 +269,7 @@ public class @CarControls : IInputActionCollection, IDisposable
         m_PlayerLocomotionMap_Look = m_PlayerLocomotionMap.FindAction("Look", throwIfNotFound: true);
         m_PlayerLocomotionMap_Jump = m_PlayerLocomotionMap.FindAction("Jump", throwIfNotFound: true);
         m_PlayerLocomotionMap_Sprint = m_PlayerLocomotionMap.FindAction("Sprint", throwIfNotFound: true);
+        m_PlayerLocomotionMap_Attack = m_PlayerLocomotionMap.FindAction("Attack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -292,6 +323,7 @@ public class @CarControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerLocomotionMap_Look;
     private readonly InputAction m_PlayerLocomotionMap_Jump;
     private readonly InputAction m_PlayerLocomotionMap_Sprint;
+    private readonly InputAction m_PlayerLocomotionMap_Attack;
     public struct PlayerLocomotionMapActions
     {
         private @CarControls m_Wrapper;
@@ -300,6 +332,7 @@ public class @CarControls : IInputActionCollection, IDisposable
         public InputAction @Look => m_Wrapper.m_PlayerLocomotionMap_Look;
         public InputAction @Jump => m_Wrapper.m_PlayerLocomotionMap_Jump;
         public InputAction @Sprint => m_Wrapper.m_PlayerLocomotionMap_Sprint;
+        public InputAction @Attack => m_Wrapper.m_PlayerLocomotionMap_Attack;
         public InputActionMap Get() { return m_Wrapper.m_PlayerLocomotionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -321,6 +354,9 @@ public class @CarControls : IInputActionCollection, IDisposable
                 @Sprint.started -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnSprint;
                 @Sprint.performed -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnSprint;
                 @Sprint.canceled -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnSprint;
+                @Attack.started -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnAttack;
+                @Attack.performed -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnAttack;
+                @Attack.canceled -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnAttack;
             }
             m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -337,6 +373,9 @@ public class @CarControls : IInputActionCollection, IDisposable
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
+                @Attack.started += instance.OnAttack;
+                @Attack.performed += instance.OnAttack;
+                @Attack.canceled += instance.OnAttack;
             }
         }
     }
@@ -347,5 +386,6 @@ public class @CarControls : IInputActionCollection, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
     }
 }

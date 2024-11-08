@@ -27,6 +27,10 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 movementToApply;
 
+    [Header("Abilities")]
+    [SerializeField] float attackCooldown = 1;
+    private float attackCooldownTimer;
+
 
     [Header("Camera")]
     public float turnSmoothTime = 0.1f;
@@ -51,10 +55,19 @@ public class PlayerController : MonoBehaviour
         HandleGravity();
         HandleJump();
         HandleCameraAndMovement();
+        HandleAttack();
 
         //set animation parameters
         playerAnim.SetBool("isWalking", (playerLocomotionInput.MovementInput.magnitude > 0.1f));
         playerAnim.SetBool("isSprinting", (playerLocomotionInput.SprintInput > 0.1f));
+        if(verticalVelocity < -10)//if falling
+        {
+            if(!playerAnim.GetBool("isFalling"))
+            {
+                playerAnim.SetBool("isFalling", true);
+                playerAnim.SetBool("isJumping", false);
+            }
+        }
     }
 
     //calculate camera after movement
@@ -77,6 +90,7 @@ public class PlayerController : MonoBehaviour
         if(characterController.isGrounded && verticalVelocity < 0)//if on the floor and moving downwards
         {
             verticalVelocity = -1;
+            playerAnim.SetBool("isFalling", false);
         }
         else
         {
@@ -125,6 +139,21 @@ public class PlayerController : MonoBehaviour
             {
                 coyoteTime = 10;
                 verticalVelocity = jumpStrength;
+                playerAnim.SetBool("isFalling", false);
+                playerAnim.SetBool("isJumping", true);
+            }
+        }
+    }
+
+    private void HandleAttack()
+    {
+        attackCooldownTimer -= Time.deltaTime;
+        if(attackCooldownTimer <= 0)
+        {
+            if(playerLocomotionInput.AttackPressed)
+            {
+                playerAnim.SetTrigger("Attack");
+                attackCooldownTimer = attackCooldown;
             }
         }
     }
