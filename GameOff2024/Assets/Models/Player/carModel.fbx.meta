@@ -76,7 +76,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.33109224
+        functionName: LightOn
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 8ae6b51310f29174f82354d9e0bcc94c, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 1
+        functionName: LightOff
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 8ae6b51310f29174f82354d9e0bcc94c, type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

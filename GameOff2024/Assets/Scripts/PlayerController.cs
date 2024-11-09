@@ -28,8 +28,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 movementToApply;
 
     [Header("Abilities")]
-    [SerializeField] float attackCooldown = 1;
-    private float attackCooldownTimer;
+    [SerializeField] float flashCooldown = 1;
+    private float flashCooldownTimer;
 
 
     [Header("Camera")]
@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
         HandleGravity();
         HandleJump();
         HandleCameraAndMovement();
-        HandleAttack();
+        HandleFlash();
 
         //set animation parameters
         playerAnim.SetBool("isWalking", (playerLocomotionInput.MovementInput.magnitude > 0.1f));
@@ -145,15 +145,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void HandleAttack()
+    private void HandleFlash()
     {
-        attackCooldownTimer -= Time.deltaTime;
-        if(attackCooldownTimer <= 0)
+        flashCooldownTimer -= Time.deltaTime;
+        if(flashCooldownTimer <= 0)
         {
-            if(playerLocomotionInput.AttackPressed)
+            if(playerLocomotionInput.FlashPressed)
             {
-                playerAnim.SetTrigger("Attack");
-                attackCooldownTimer = attackCooldown;
+                playerAnim.SetTrigger("Flash");
+                flashCooldownTimer = flashCooldown;
+                
             }
         }
     }

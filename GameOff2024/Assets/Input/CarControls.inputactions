@@ -38,7 +38,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "Attack",
+                    "name": "Flash",
                     "type": "Button",
                     "id": "c61ef515-ed56-4c97-9f7a-eb81050ad2a0",
                     "expectedControlType": "Button",
@@ -226,22 +226,22 @@
                 {
                     "name": "",
                     "id": "4e912a74-b9e3-44ee-8aeb-2d09f2497b1b",
-                    "path": "<Mouse>/leftButton",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "Flash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "d3a28b1e-fdd3-4593-972e-5809e313eac9",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Attack",
+                    "action": "Flash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
