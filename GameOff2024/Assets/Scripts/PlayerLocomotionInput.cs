@@ -12,6 +12,7 @@ public class PlayerLocomotionInput : MonoBehaviour, CarControls.IPlayerLocomotio
     public bool JumpPressed { get; private set; }
     public float SprintInput { get; private set; }
     public bool FlashPressed { get; private set; }
+    public float DebugInput { get; private set; }//ToDo Remove
 
     //Set up input system
     private void OnEnable()
@@ -67,5 +68,10 @@ public class PlayerLocomotionInput : MonoBehaviour, CarControls.IPlayerLocomotio
             return;
         }
         FlashPressed = true;
+    }
+
+    public void OnDebugButton(InputAction.CallbackContext context)//ToDo Remove Later
+    {
+        DebugInput = context.ReadValue<float>();
     }
 }
