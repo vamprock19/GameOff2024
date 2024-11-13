@@ -13,14 +13,19 @@ public class PatrolNavigation : MonoBehaviour
         Navigating,     //3 - move to certain location
         Finding,        //4 - looking around for the player
         Spotting,       //5 - currently seeing the player
-        Stunned         //6 - unable to move or detect the player
+        Stunned        //6 - unable to move or detect the player
     }
     
     public NavMeshAgent agent;
+    [SerializeField] private Animator enemyAnim;
     private EnemyState currentState = EnemyState.Patrolling;
     private GameObject player;
     public float suspicionMeter = 0;
     public float suspicionRate = 10;
+    public GameObject suspicionIcon;
+    private Camera playerCamera;
+    private float startRot;
+    private float startTime;
 
 
     [Header("Patrol Route")]
@@ -34,6 +39,7 @@ public class PatrolNavigation : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerCamera = Camera.main;
         player = FindObjectOfType<PlayerController>().gameObject;
         defaultSpeed = agent.speed;
 
@@ -52,6 +58,7 @@ public class PatrolNavigation : MonoBehaviour
             agent.nextPosition = patrolPath[patrolPointer].position;//teleport to first waypoint
             if(currentState == EnemyState.Patrolling)
             {
+                enemyAnim.SetBool("isWalking", true);
                 MoveToNextWaypoint();//start patrolling
             }
         }
@@ -85,14 +92,20 @@ public class PatrolNavigation : MonoBehaviour
         }
     }
 
-    //State Functions
+    void FixedUpdate()
+    {
+        //have icon always face player
+        suspicionIcon.transform.LookAt(playerCamera.transform);
+    }
+
+    //State Functions++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void DoWaiting()//Waiting State----------------------------------------------------------------------------------------------------
     {
-        //ToDo Modify this for looking around?
         agent.ResetPath();
         CancelInvoke();
         agent.speed = defaultSpeed;
         Invoke("MoveToNextWaypoint", 1);//return to patrol
+        enemyAnim.SetBool("isWalking", false);
         currentState = EnemyState.NullState;
     }
 
@@ -101,6 +114,8 @@ public class PatrolNavigation : MonoBehaviour
         torchLight.gameObject.SetActive(true);
         currentState = EnemyState.Patrolling;
         agent.SetDestination(patrolPath[patrolPointer].position);//go to next place
+        enemyAnim.SetBool("isWalking", true);
+        enemyAnim.SetBool("isDizzy", false);
         patrolPointer = (patrolPointer + 1) % patrolPath.Length;
     }
 
@@ -118,6 +133,8 @@ public class PatrolNavigation : MonoBehaviour
         if(((!agent.pathPending) && (agent.remainingDistance < 0.5f)) || (agent.pathStatus == NavMeshPathStatus.PathInvalid))//if navigation destination reached or failed
         {
             currentState = EnemyState.Finding;
+            startRot = agent.transform.eulerAngles.y;//initial rotation for looking around
+            startTime = Time.timeSinceLevelLoad;
         }
     }
 
@@ -127,7 +144,9 @@ public class PatrolNavigation : MonoBehaviour
         agent.speed = defaultSpeed;
         currentState = EnemyState.Navigating;
         agent.SetDestination(searchLocation);//go to navigate location
+        enemyAnim.SetBool("isWalking", true);
         suspicionMeter += 10;//set suspicion when alerted
+        suspicionIcon.SetActive(true);
         CheckForEndGame();
     }
 
@@ -136,6 +155,7 @@ public class PatrolNavigation : MonoBehaviour
         agent.speed = 0;
         currentState = EnemyState.Navigating;
         agent.SetDestination(searchLocation);//go to navigate location
+        enemyAnim.SetBool("isWalking", false);
         CancelInvoke();
         Invoke("EndDelay", 2);//start navigating
     }
@@ -143,19 +163,23 @@ public class PatrolNavigation : MonoBehaviour
     private void EndDelay()
     {
         agent.speed = defaultSpeed;
+        enemyAnim.SetBool("isWalking", true);
     }
 
     private void DoFinding()//Finding State----------------------------------------------------------------------------------------------------
     {
-        //ToDo Modify this for looking around?
         agent.ResetPath();
+        enemyAnim.SetBool("isWalking", false);
         CancelInvoke();
         agent.speed = defaultSpeed;
         suspicionMeter = suspicionMeter - (Time.deltaTime * suspicionRate);//decrease suspicion while searching
+        //rotate enemy to search
+        agent.transform.eulerAngles = new Vector3(agent.transform.eulerAngles.x, startRot + (60 * Mathf.Sin(Time.timeSinceLevelLoad - startTime)), agent.transform.eulerAngles.z);
         //if suspicion gone, continue patrol
         if(suspicionMeter <= 0)
         {
             suspicionMeter = 0;
+            suspicionIcon.SetActive(false);
             Invoke("MoveToNextWaypoint", 1);//return to patrol after 1 second
             currentState = EnemyState.NullState;
         }
@@ -180,12 +204,14 @@ public class PatrolNavigation : MonoBehaviour
         }
         //increment suspicion meter
         suspicionMeter += (Time.deltaTime * suspicionRate);
+        suspicionIcon.SetActive(true);
         CheckForEndGame();
     }
 
     public void SpotPlayer()
     {
         agent.ResetPath();
+        enemyAnim.SetBool("isWalking", false);
         CancelInvoke();
         agent.speed = defaultSpeed;
         currentState = EnemyState.Spotting;
@@ -193,8 +219,9 @@ public class PatrolNavigation : MonoBehaviour
 
     private void DoStunned()//Stunned State----------------------------------------------------------------------------------------------------
     {
-        //ToDo Modify this for looking around?
         agent.ResetPath();
+        enemyAnim.SetBool("isWalking", false);
+        enemyAnim.SetBool("isDizzy", true);
         CancelInvoke();
         agent.speed = defaultSpeed;
         torchLight.TurnOffTorch();
@@ -206,12 +233,16 @@ public class PatrolNavigation : MonoBehaviour
     public void BecomeStunned()
     {
         agent.ResetPath();
+        enemyAnim.SetBool("isWalking", false);
+        enemyAnim.SetBool("isDizzy", true);
+        suspicionMeter = 0;
+        suspicionIcon.SetActive(false);
         CancelInvoke();
         agent.speed = defaultSpeed;
         currentState = EnemyState.Stunned;
     }
 
-    //
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
     private void CheckForEndGame()
     {

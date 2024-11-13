@@ -23,7 +23,7 @@ public class EnemyConeDetection : MonoBehaviour
             RaycastHit hit;
             if(Physics.Raycast(patrolNavigation.transform.position, (player.transform.position - patrolNavigation.transform.position).normalized, out hit, 50))
             {
-                if(!hit.collider.gameObject.Equals(player.gameObject))
+                if(!hit.collider.gameObject.Equals(player.gameObject))//if not in LOS
                 {
                     //if player no longer seen, investigate last seen location
                     patrolNavigation.DelayedNavigation(player.transform.position);
@@ -66,6 +66,20 @@ public class EnemyConeDetection : MonoBehaviour
                         isLookingAtPlayer = true;
                     }
                 }
+            }
+        }
+    }
+
+    //ToDo Pick Version, remove this function based on how enemy vision should work
+    void OnTriggerExit(Collider col)//if player no longer spotted, enter investigating mode
+    {
+        if(isLookingAtPlayer)
+        {
+            if(col.tag == "Player")
+            {
+                //if player no longer seen, investigate last seen location
+                patrolNavigation.DelayedNavigation(player.transform.position);
+                isLookingAtPlayer = false;
             }
         }
     }
