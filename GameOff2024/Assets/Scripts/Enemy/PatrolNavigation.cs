@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum DisguiseGroups
+{
+    None = 1,
+    Red = 2,
+    Blue = 3,
+    Green = 5,
+    Yellow = 7
+}
+
 public class PatrolNavigation : MonoBehaviour
 {
     enum EnemyState
@@ -21,7 +30,7 @@ public class PatrolNavigation : MonoBehaviour
     private EnemyState currentState = EnemyState.Patrolling;
     private GameObject player;
     public float suspicionMeter = 0;
-    public float suspicionRate = 10;
+    public float suspicionRate = 20;
     public GameObject suspicionIcon;
     private Camera playerCamera;
     private float startRot;
@@ -35,7 +44,11 @@ public class PatrolNavigation : MonoBehaviour
 
     [Header("Stun")]
     [SerializeField] private EnemyConeDetection torchLight;
+
+    [Header("Disguise")]//success of diguise calculated using prime numbers
+    public DisguiseGroups disguiseNeeded = DisguiseGroups.None;//id of disguise needed by player to avoid detection by this when still.  1 - none, 2 - red, 3 - blue, 5 - green, 7 - yellow
     
+
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +80,7 @@ public class PatrolNavigation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //act based on current state
         switch(currentState)
         {
             case EnemyState.Waiting:
@@ -140,14 +154,19 @@ public class PatrolNavigation : MonoBehaviour
 
     public void NavigationAlert(Vector3 searchLocation)//Tell enemy where to go to
     {
+        NavigationStart(searchLocation);
+        suspicionMeter = Mathf.Max(20, suspicionMeter);//set suspicion when alerted
+        CheckForEndGame();
+    }
+
+    public void NavigationStart(Vector3 searchLocation)//Tell enemy where to go to
+    {
         CancelInvoke();
         agent.speed = defaultSpeed;
         currentState = EnemyState.Navigating;
         agent.SetDestination(searchLocation);//go to navigate location
         enemyAnim.SetBool("isWalking", true);
-        suspicionMeter += 10;//set suspicion when alerted
         suspicionIcon.SetActive(true);
-        CheckForEndGame();
     }
 
     public void DelayedNavigation(Vector3 searchLocation)
@@ -187,20 +206,18 @@ public class PatrolNavigation : MonoBehaviour
 
     private void DoSpotting()//Spotting State----------------------------------------------------------------------------------------------------
     {
-        //turn to face player
-        Vector3 startPos = agent.transform.position;
+        TurnTowardsPlayer();
+        //if too far, move closer
         Vector3 endPos = new Vector3(player.transform.position.x, agent.transform.position.y, player.transform.position.z);
-        Vector3 direVect = (endPos - startPos).normalized;
-        if(Mathf.Abs(Vector3.SignedAngle(agent.transform.forward, direVect, Vector3.up)) > 10)
+        if(Vector3.Distance(agent.transform.position, endPos) > 15)
         {
-            if(Vector3.SignedAngle(agent.transform.forward, direVect, Vector3.up) > 0)
-            {
-                agent.transform.Rotate(new Vector3(0, 0.75f, 0));
-            }
-            else
-            {
-                agent.transform.Rotate(new Vector3(0, -0.75f, 0));
-            }
+            agent.SetDestination(endPos);
+            enemyAnim.SetBool("isWalking", true);
+        }
+        else
+        {
+            agent.ResetPath();
+            enemyAnim.SetBool("isWalking", false);
         }
         //increment suspicion meter
         suspicionMeter += (Time.deltaTime * suspicionRate);
@@ -215,6 +232,30 @@ public class PatrolNavigation : MonoBehaviour
         CancelInvoke();
         agent.speed = defaultSpeed;
         currentState = EnemyState.Spotting;
+    }
+
+    private void TurnTowardsPlayer()
+    {
+        TurnTowardsPlayer(0.75f);
+    }
+
+    private void TurnTowardsPlayer(float turnSpeed)
+    {
+        //turn to face player
+        Vector3 startPos = agent.transform.position;
+        Vector3 endPos = new Vector3(player.transform.position.x, agent.transform.position.y, player.transform.position.z);
+        Vector3 direVect = (endPos - startPos).normalized;
+        if(Mathf.Abs(Vector3.SignedAngle(agent.transform.forward, direVect, Vector3.up)) > 10)
+        {
+            if(Vector3.SignedAngle(agent.transform.forward, direVect, Vector3.up) > 0)
+            {
+                agent.transform.Rotate(new Vector3(0, turnSpeed, 0));
+            }
+            else
+            {
+                agent.transform.Rotate(new Vector3(0, -turnSpeed, 0));
+            }
+        }
     }
 
     private void DoStunned()//Stunned State----------------------------------------------------------------------------------------------------

@@ -28,4 +28,9 @@ public class AnimEvents : MonoBehaviour
             g.SetActive(false);
         }
     }
+
+    public void SetTryingToHide(int oneForTrue)
+    {
+        FindObjectOfType<PlayerController>().isTryingToHide = oneForTrue == 1 ? true:false;
+    }
 }

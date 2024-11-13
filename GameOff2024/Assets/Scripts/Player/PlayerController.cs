@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour
     [Header("Abilities")]
     [SerializeField] float flashCooldown = 1;
     private float flashCooldownTimer;
+    public int disguisesOwned = 1;
+    public bool isTryingToHide = true;
 
 
     [Header("Camera")]

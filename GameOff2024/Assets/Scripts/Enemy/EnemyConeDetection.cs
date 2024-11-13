@@ -7,11 +7,13 @@ public class EnemyConeDetection : MonoBehaviour
     [SerializeField] private PatrolNavigation patrolNavigation;
     private bool isLookingAtPlayer = false;
     private GameObject player;
+    private PlayerController playerCont;
 
     // Start is called before the first frame update
     void Start()
     {
-        player = FindObjectOfType<PlayerController>().gameObject;
+        playerCont = FindObjectOfType<PlayerController>();
+        player = playerCont.gameObject;
     }
 
     void FixedUpdate()
@@ -43,8 +45,12 @@ public class EnemyConeDetection : MonoBehaviour
             {
                 if(hit.collider.gameObject.Equals(col.gameObject))
                 {
-                    patrolNavigation.SpotPlayer();
-                    isLookingAtPlayer = true;
+                    //if player is not hiding, OR trying to hide but doesnt have valid disguise for enemy OR enemy already suspicious
+                    if((!playerCont.isTryingToHide) || ((playerCont.isTryingToHide) && (playerCont.disguisesOwned % (int)patrolNavigation.disguiseNeeded != 0)) || (patrolNavigation.suspicionMeter >= 1))
+                    {
+                        patrolNavigation.SpotPlayer();
+                        isLookingAtPlayer = true;
+                    }
                 }
             }
         }
@@ -62,8 +68,12 @@ public class EnemyConeDetection : MonoBehaviour
                 {
                     if(hit.collider.gameObject.Equals(col.gameObject))
                     {
-                        patrolNavigation.SpotPlayer();
-                        isLookingAtPlayer = true;
+                        //if player is not hiding, OR trying to hide but doesnt have valid disguise for enemy OR enemy already suspicious
+                        if((!playerCont.isTryingToHide) || ((playerCont.isTryingToHide) && (playerCont.disguisesOwned % (int)patrolNavigation.disguiseNeeded != 0)) || (patrolNavigation.suspicionMeter >= 1))
+                        {
+                            patrolNavigation.SpotPlayer();
+                            isLookingAtPlayer = true;
+                        }
                     }
                 }
             }
