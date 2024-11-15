@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -29,13 +30,18 @@ public class PatrolNavigation : MonoBehaviour
     [SerializeField] private Animator enemyAnim;
     private EnemyState currentState = EnemyState.Patrolling;
     private GameObject player;
-    public float suspicionMeter = 0;
-    public float suspicionRate = 20;
-    public GameObject suspicionIcon;
     private Camera playerCamera;
     private float startRot;
     private float startTime;
 
+    [Header("Suspicion")]
+    public float suspicionMeter = 0;
+    public float suspicionRate = 20;
+    public GameObject suspicionIcon;
+    [SerializeField] private SpriteRenderer suspicionIconRenderer;
+    [SerializeField] private GameObject suspicionMask;
+    [HideInInspector] public static PatrolNavigation gameOverEnemy;//a variable shared between PatrolNavigation instances to identify which enemy ended the game
+    [SerializeField] private CinemachineVirtualCamera personalVCam;
 
     [Header("Patrol Route")]
     [SerializeField] private Transform[] patrolPath;
@@ -110,6 +116,9 @@ public class PatrolNavigation : MonoBehaviour
     {
         //have icon always face player
         suspicionIcon.transform.LookAt(playerCamera.transform);
+        //set mask height
+        suspicionMask.transform.localPosition = new Vector3(0, (Mathf.Min(suspicionMeter, 100) * 0.09f) + 0.5f, 0);
+        suspicionIconRenderer.color = Color.HSVToRGB((60 - (Mathf.Min(suspicionMeter, 100) * 0.6f))/360f, 0.95f, 0.95f);
     }
 
     //State Functions++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -290,10 +299,33 @@ public class PatrolNavigation : MonoBehaviour
         if(suspicionMeter >= 100)
         {
             suspicionMeter = 100;
-            //currentState = EnemyState.NullState;
-            //ToDo Lose Game Here
-            
+            if(gameOverEnemy == null)//stop multiple enemies from running this script at the same time
+            {
+                gameOverEnemy = this;
+                enemyAnim.SetBool("isWalking", false);
+                enemyAnim.SetBool("isDizzy", false);
+                currentState = EnemyState.NullState;
+                CancelInvoke();
+                agent.ResetPath();
+                player.GetComponent<PlayerController>().ToggleInputOn(false);//disable input
+                FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls
+                //pan camera to player
+                if(personalVCam != null)
+                {
+                    personalVCam.enabled = true;
+                }
+                else
+                {
+                    EndGamePostCameraPan();//even if no pan, run function anyway
+                }
+            }
         }
+    }
+
+    public void EndGamePostCameraPan()//the engame functionality after the camera pan
+    {
+        //ToDo Lose Game Here
+        Debug.Log("ToDo Lost Game");
     }
     
 }

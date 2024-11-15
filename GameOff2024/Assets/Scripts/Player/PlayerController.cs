@@ -161,4 +161,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //turn player controls on or off
+    public void ToggleInputOn(bool inputOn)
+    {
+        if(inputOn)
+        {
+            playerLocomotionInput.CarControls.Enable();
+        }
+        else
+        {
+            playerLocomotionInput.CarControls.Disable();
+        }
+    }
 }
