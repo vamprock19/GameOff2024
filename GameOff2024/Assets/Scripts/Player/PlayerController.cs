@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -8,6 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private CinemachineFreeLook mainVCam;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Animator playerAnim;
 
@@ -18,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public float runSpeed;
     [SerializeField] float sprintMult;
 
+    [Header("Vertical Movement")]
     private float gravity = -9.81f;
     [SerializeField] float gravMult = 3;
     private float verticalVelocity = 0;
@@ -33,6 +36,10 @@ public class PlayerController : MonoBehaviour
     public int disguisesOwned = 1;
     public bool isTryingToHide = true;
 
+    [Header("Auto-Movement")]
+    public bool isAutomoving = false;
+    public List<Vector3> autoDestinationQueue = new List<Vector3>();
+    private float autoDestTimeout = 0;//time limit for auto-movement
 
     [Header("Camera")]
     public float turnSmoothTime = 0.1f;
@@ -53,15 +60,25 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        movementToApply = new Vector3(0, 0, 0);
-        HandleGravity();
-        HandleJump();
-        HandleCameraAndMovement();
-        HandleFlash();
+        movementToApply = new Vector3(0, 0, 0);  
+        if(!isAutomoving)//if player is controlling movement
+        {
+            HandleGravity();
+            HandleJump();
+            HandleCameraAndMovement();
+            HandleFlash();
 
-        //set animation parameters
-        playerAnim.SetBool("isWalking", (playerLocomotionInput.MovementInput.magnitude > 0.1f));
-        playerAnim.SetBool("isSprinting", (playerLocomotionInput.SprintInput > 0.1f));
+            //set animation parameters
+            playerAnim.SetBool("isWalking", (playerLocomotionInput.MovementInput.magnitude > 0.1f));
+            playerAnim.SetBool("isSprinting", (playerLocomotionInput.SprintInput > 0.1f));
+        }
+        else//if automatic movement
+        {        
+            HandleGravity();
+            HandleJump();
+            HandleAutoMovement();
+            playerAnim.SetBool("isWalking", (autoDestinationQueue.Count >= 1));
+        }
         if(verticalVelocity < -10)//if falling
         {
             if(!playerAnim.GetBool("isFalling"))
@@ -75,15 +92,29 @@ public class PlayerController : MonoBehaviour
     //calculate camera after movement
     private void LateUpdate()
     {
-        //when player moving
-        if(playerLocomotionInput.MovementInput.magnitude > 0.1f)
+        if(!isAutomoving)//if player is controlling movement
         {
-            Vector3 inpDirection = new Vector3(playerLocomotionInput.MovementInput.x, 0, playerLocomotionInput.MovementInput.y).normalized;
+            //when player moving
+            if(playerLocomotionInput.MovementInput.magnitude > 0.1f)
+            {
+                Vector3 inpDirection = new Vector3(playerLocomotionInput.MovementInput.x, 0, playerLocomotionInput.MovementInput.y).normalized;
 
-            //set the rotation to facing direction
-            float targAng = Mathf.Atan2(inpDirection.x, inpDirection.z) * Mathf.Rad2Deg + playerCamera.transform.eulerAngles.y;
-            float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targAng, ref turnSmoothVelocity, turnSmoothTime);
-            transform.rotation = Quaternion.Euler(0f, smoothedAngle, 0f);
+                //set the rotation to facing direction
+                float targAng = Mathf.Atan2(inpDirection.x, inpDirection.z) * Mathf.Rad2Deg + playerCamera.transform.eulerAngles.y;
+                float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targAng, ref turnSmoothVelocity, turnSmoothTime);
+                transform.rotation = Quaternion.Euler(0f, smoothedAngle, 0f);
+            }
+        }
+        else
+        {
+            if(autoDestinationQueue.Count >= 1)
+            {
+                Vector3 inpDirection = (new Vector3((autoDestinationQueue[0].x - transform.position.x), 0, (autoDestinationQueue[0].z - transform.position.z))).normalized;
+
+                //set the rotation to facing direction
+                float targAng = Mathf.Atan2(inpDirection.x, inpDirection.z) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(0f, targAng, 0f);
+            }
         }
     }
 
@@ -172,5 +203,66 @@ public class PlayerController : MonoBehaviour
         {
             playerLocomotionInput.CarControls.Disable();
         }
+    }
+
+    //Auto movement -----------------------------------------------------------------------------------------------------------
+    private void HandleAutoMovement()
+    {
+        if(autoDestinationQueue.Count >= 1)//if there is a destination
+        {
+            
+            Vector3 moveDirection = (new Vector3((autoDestinationQueue[0].x - transform.position.x), 0, (autoDestinationQueue[0].z - transform.position.z))).normalized;
+            moveDirection = (autoDestinationQueue[0] - transform.position);
+            moveDirection = new Vector3(moveDirection.x, 0 ,moveDirection.z).normalized;
+
+            Vector3 moveDelta = moveDirection * runAcceleration * Time.deltaTime;
+            Vector3 newVel = characterController.velocity + moveDelta;
+            newVel.y = 0;//no vertical speed limit
+
+            //apply drag
+            Vector3 curDrag = newVel.normalized * drag * Time.deltaTime;
+            newVel = (newVel.magnitude > drag * Time.deltaTime) ? newVel - curDrag : Vector3.zero;
+
+            //apply movement
+            movementToApply += newVel;
+            movementToApply.y += verticalVelocity;//and gravity and jump
+            //move player
+            characterController.Move(movementToApply * Time.deltaTime);
+
+            autoDestTimeout += Time.deltaTime;
+            if(autoDestTimeout > 3)//set 3 second limit to avoid impossible movement
+            {
+                autoDestinationQueue.RemoveAt(0);
+                autoDestTimeout = 0;
+                if(autoDestinationQueue.Count == 0)
+                {
+                    isAutomoving = false;
+                }
+            }
+            else
+            {
+                float dist = Vector3.Distance(new Vector3(autoDestinationQueue[0].x, 0, autoDestinationQueue[0].z), new Vector3(transform.position.x, 0, transform.position.z));
+                if(dist < 0.05f)//if close enough to destination
+                {
+                    autoDestinationQueue.RemoveAt(0);
+                    autoDestTimeout = 0;
+                    if(autoDestinationQueue.Count == 0)
+                    {
+                        isAutomoving = false;
+                    }
+                }
+            }
+        }
+    }
+
+    public void CancelAutoMovement()
+    {
+        autoDestinationQueue.Clear();
+        isAutomoving = false;
+    }
+
+    public void SetCameraYAngleManual(float ang)
+    {
+        mainVCam.m_XAxis.Value = ang;
     }
 }
