@@ -324,8 +324,8 @@ public class PatrolNavigation : MonoBehaviour
 
     public void EndGamePostCameraPan()//the engame functionality after the camera pan
     {
-        //ToDo Lose Game Here
-        Debug.Log("ToDo Lost Game");
+        //Lose Game
+        FindObjectOfType<UIScripts>().ShowLevelLoseScreen();
     }
     
 }

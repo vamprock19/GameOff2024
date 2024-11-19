@@ -153,19 +153,7 @@ MonoBehaviour:
     m_InheritPosition: 0
     m_OnCameraLive:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5855118476564199391}
-          m_TargetAssemblyTypeName: LevelEndTrigger, Assembly-CSharp
-          m_MethodName: StartGameCameraPan
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 1147404374052909353}
 --- !u!1 &1795156392103016657
@@ -451,19 +439,7 @@ MonoBehaviour:
     m_InheritPosition: 0
     m_OnCameraLive:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 5855118476564199391}
-          m_TargetAssemblyTypeName: LevelEndTrigger, Assembly-CSharp
-          m_MethodName: EndGamePostCameraPan
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
   m_LegacyBlendHint: 0
   m_ComponentOwner: {fileID: 6668436945082537366}
 --- !u!1 &4944535459254158862

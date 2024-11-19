@@ -59,7 +59,7 @@ public class @CarControls : IInputActionCollection, IDisposable
                     ""interactions"": """"
                 },
                 {
-                    ""name"": ""DebugButton"",
+                    ""name"": ""Pause"",
                     ""type"": ""Button"",
                     ""id"": ""2a505b44-e665-441a-81f0-0125ff7c5cef"",
                     ""expectedControlType"": ""Button"",
@@ -269,11 +269,22 @@ public class @CarControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6ee92fca-639e-4866-9fd9-a50f9ed082d3"",
-                    ""path"": ""<Pen>/press"",
+                    ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""DebugButton"",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea5c3963-8dee-4c8f-980e-11e567305bd2"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -289,7 +300,7 @@ public class @CarControls : IInputActionCollection, IDisposable
         m_PlayerLocomotionMap_Jump = m_PlayerLocomotionMap.FindAction("Jump", throwIfNotFound: true);
         m_PlayerLocomotionMap_Sprint = m_PlayerLocomotionMap.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerLocomotionMap_Flash = m_PlayerLocomotionMap.FindAction("Flash", throwIfNotFound: true);
-        m_PlayerLocomotionMap_DebugButton = m_PlayerLocomotionMap.FindAction("DebugButton", throwIfNotFound: true);
+        m_PlayerLocomotionMap_Pause = m_PlayerLocomotionMap.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -344,7 +355,7 @@ public class @CarControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerLocomotionMap_Jump;
     private readonly InputAction m_PlayerLocomotionMap_Sprint;
     private readonly InputAction m_PlayerLocomotionMap_Flash;
-    private readonly InputAction m_PlayerLocomotionMap_DebugButton;
+    private readonly InputAction m_PlayerLocomotionMap_Pause;
     public struct PlayerLocomotionMapActions
     {
         private @CarControls m_Wrapper;
@@ -354,7 +365,7 @@ public class @CarControls : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_PlayerLocomotionMap_Jump;
         public InputAction @Sprint => m_Wrapper.m_PlayerLocomotionMap_Sprint;
         public InputAction @Flash => m_Wrapper.m_PlayerLocomotionMap_Flash;
-        public InputAction @DebugButton => m_Wrapper.m_PlayerLocomotionMap_DebugButton;
+        public InputAction @Pause => m_Wrapper.m_PlayerLocomotionMap_Pause;
         public InputActionMap Get() { return m_Wrapper.m_PlayerLocomotionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -379,9 +390,9 @@ public class @CarControls : IInputActionCollection, IDisposable
                 @Flash.started -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnFlash;
                 @Flash.performed -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnFlash;
                 @Flash.canceled -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnFlash;
-                @DebugButton.started -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnDebugButton;
-                @DebugButton.performed -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnDebugButton;
-                @DebugButton.canceled -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnDebugButton;
+                @Pause.started -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -401,9 +412,9 @@ public class @CarControls : IInputActionCollection, IDisposable
                 @Flash.started += instance.OnFlash;
                 @Flash.performed += instance.OnFlash;
                 @Flash.canceled += instance.OnFlash;
-                @DebugButton.started += instance.OnDebugButton;
-                @DebugButton.performed += instance.OnDebugButton;
-                @DebugButton.canceled += instance.OnDebugButton;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -415,6 +426,6 @@ public class @CarControls : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnFlash(InputAction.CallbackContext context);
-        void OnDebugButton(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

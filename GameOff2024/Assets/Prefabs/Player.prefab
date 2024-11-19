@@ -695,8 +695,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 3279763880939351895}
+  mainVCam: {fileID: 0}
   playerCamera: {fileID: 0}
   playerAnim: {fileID: 3279763880653915286}
+  canMove: 0
   runAcceleration: 80
   drag: 60
   runSpeed: 10
@@ -704,6 +706,10 @@ MonoBehaviour:
   gravMult: 4.5
   jumpStrength: 25
   flashCooldown: 1
+  disguisesOwned: 1
+  isTryingToHide: 1
+  isAutomoving: 0
+  autoDestinationQueue: []
   turnSmoothTime: 0.1
 --- !u!114 &3279763880939351894
 MonoBehaviour:

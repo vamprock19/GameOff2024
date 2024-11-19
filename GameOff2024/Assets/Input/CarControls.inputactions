@@ -46,7 +46,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "DebugButton",
+                    "name": "Pause",
                     "type": "Button",
                     "id": "2a505b44-e665-441a-81f0-0125ff7c5cef",
                     "expectedControlType": "Button",
@@ -256,11 +256,22 @@
                 {
                     "name": "",
                     "id": "6ee92fca-639e-4866-9fd9-a50f9ed082d3",
-                    "path": "<Pen>/press",
+                    "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "DebugButton",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ea5c3963-8dee-4c8f-980e-11e567305bd2",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

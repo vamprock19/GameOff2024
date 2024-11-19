@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Movement")]
+    [SerializeField] private bool canMove = false;
     public float runAcceleration;
     public float drag;
     public float runSpeed;
@@ -53,38 +54,48 @@ public class PlayerController : MonoBehaviour
         playerLocomotionInput = GetComponent<PlayerLocomotionInput>();
     }
 
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
     private void Update()
     {
-        movementToApply = new Vector3(0, 0, 0);  
-        if(!isAutomoving)//if player is controlling movement
+        movementToApply = new Vector3(0, 0, 0);//zero movement
+        //pause game
+        if(playerLocomotionInput.PausePressed)
         {
-            HandleGravity();
-            HandleJump();
-            HandleCameraAndMovement();
-            HandleFlash();
-
-            //set animation parameters
-            playerAnim.SetBool("isWalking", (playerLocomotionInput.MovementInput.magnitude > 0.1f));
-            playerAnim.SetBool("isSprinting", (playerLocomotionInput.SprintInput > 0.1f));
+            FindObjectOfType<UIScripts>().TogglePause();
+            mainVCam.enabled = !mainVCam.enabled;
         }
-        else//if automatic movement
-        {        
-            HandleGravity();
-            HandleJump();
-            HandleAutoMovement();
-            playerAnim.SetBool("isWalking", (autoDestinationQueue.Count >= 1));
-        }
-        if(verticalVelocity < -10)//if falling
+        if(mainVCam.enabled)//if not paused
         {
-            if(!playerAnim.GetBool("isFalling"))
+            if(!isAutomoving)//if player is controlling movement
             {
-                playerAnim.SetBool("isFalling", true);
-                playerAnim.SetBool("isJumping", false);
+                HandleGravity();
+                HandleJump();
+                if(canMove)
+                {
+                    HandleCameraAndMovement();
+                }
+                HandleFlash();
+
+                //set animation parameters
+                playerAnim.SetBool("isWalking", (playerLocomotionInput.MovementInput.magnitude > 0.1f));
+                playerAnim.SetBool("isSprinting", (playerLocomotionInput.SprintInput > 0.1f));
+            }
+            else//if automatic movement
+            {        
+                HandleGravity();
+                HandleJump();
+                if(canMove)
+                {
+                    HandleAutoMovement();
+                }
+                playerAnim.SetBool("isWalking", (autoDestinationQueue.Count >= 1));
+            }
+            if(verticalVelocity < -10)//if falling
+            {
+                if(!playerAnim.GetBool("isFalling"))
+                {
+                    playerAnim.SetBool("isFalling", true);
+                    playerAnim.SetBool("isJumping", false);
+                }
             }
         }
     }
@@ -92,28 +103,31 @@ public class PlayerController : MonoBehaviour
     //calculate camera after movement
     private void LateUpdate()
     {
-        if(!isAutomoving)//if player is controlling movement
+        if(mainVCam.enabled)//if not paused
         {
-            //when player moving
-            if(playerLocomotionInput.MovementInput.magnitude > 0.1f)
+            if(!isAutomoving)//if player is controlling movement
             {
-                Vector3 inpDirection = new Vector3(playerLocomotionInput.MovementInput.x, 0, playerLocomotionInput.MovementInput.y).normalized;
+                //when player moving
+                if(playerLocomotionInput.MovementInput.magnitude > 0.1f)
+                {
+                    Vector3 inpDirection = new Vector3(playerLocomotionInput.MovementInput.x, 0, playerLocomotionInput.MovementInput.y).normalized;
 
-                //set the rotation to facing direction
-                float targAng = Mathf.Atan2(inpDirection.x, inpDirection.z) * Mathf.Rad2Deg + playerCamera.transform.eulerAngles.y;
-                float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targAng, ref turnSmoothVelocity, turnSmoothTime);
-                transform.rotation = Quaternion.Euler(0f, smoothedAngle, 0f);
+                    //set the rotation to facing direction
+                    float targAng = Mathf.Atan2(inpDirection.x, inpDirection.z) * Mathf.Rad2Deg + playerCamera.transform.eulerAngles.y;
+                    float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targAng, ref turnSmoothVelocity, turnSmoothTime);
+                    transform.rotation = Quaternion.Euler(0f, smoothedAngle, 0f);
+                }
             }
-        }
-        else
-        {
-            if(autoDestinationQueue.Count >= 1)
+            else
             {
-                Vector3 inpDirection = (new Vector3((autoDestinationQueue[0].x - transform.position.x), 0, (autoDestinationQueue[0].z - transform.position.z))).normalized;
+                if(autoDestinationQueue.Count >= 1)
+                {
+                    Vector3 inpDirection = (new Vector3((autoDestinationQueue[0].x - transform.position.x), 0, (autoDestinationQueue[0].z - transform.position.z))).normalized;
 
-                //set the rotation to facing direction
-                float targAng = Mathf.Atan2(inpDirection.x, inpDirection.z) * Mathf.Rad2Deg;
-                transform.rotation = Quaternion.Euler(0f, targAng, 0f);
+                    //set the rotation to facing direction
+                    float targAng = Mathf.Atan2(inpDirection.x, inpDirection.z) * Mathf.Rad2Deg;
+                    transform.rotation = Quaternion.Euler(0f, targAng, 0f);
+                }
             }
         }
     }
@@ -237,6 +251,7 @@ public class PlayerController : MonoBehaviour
                 if(autoDestinationQueue.Count == 0)
                 {
                     isAutomoving = false;
+                    AllowMovement(false);
                 }
             }
             else
@@ -249,10 +264,16 @@ public class PlayerController : MonoBehaviour
                     if(autoDestinationQueue.Count == 0)
                     {
                         isAutomoving = false;
+                        AllowMovement(false);
                     }
                 }
             }
         }
+    }
+
+    public void AllowMovement(bool newState)
+    {
+        canMove = newState;
     }
 
     public void CancelAutoMovement()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-public class LevelEndTrigger : MonoBehaviour
+public class Elevator : MonoBehaviour
 {
     [SerializeField] private CinemachineVirtualCamera personalVCamOutside;
     [SerializeField] private CinemachineVirtualCamera personalVCamInside;
@@ -12,11 +12,13 @@ public class LevelEndTrigger : MonoBehaviour
     [SerializeField] private GameObject invisWall;
     private PlayerController playerController;
     public bool isStartgameElevator = false;//is this elevator for the start or end of a level
+    private float playerYDiff = 0.8f;//approx height of player above floor. (Not calculated live to avoid some bugs)
 
-    //ToDo ensure camera panless functionality
+    //ToDo ensure functionality for when camera pan not working
 
     void Start()
     {
+        playerController = FindObjectOfType<PlayerController>();
         if(isStartgameElevator)//if elevator at level start
         {
             //cut camera to inside
@@ -25,14 +27,13 @@ public class LevelEndTrigger : MonoBehaviour
                 personalVCamInside.enabled = true;
                 personalVCamOutside.enabled = true;
                 //set player position inside lift
-                playerController = FindObjectOfType<PlayerController>();
-                playerController.transform.position = new Vector3(transform.position.x, playerController.transform.position.y, transform.position.z);
-                playerController.transform.eulerAngles = new Vector3(0, Mathf.Round(playerController.transform.rotation.y / 90f) * 90, 0);
+                PlaceCarInLift();
                 //disable trigger outside
                 GetComponent<BoxCollider>().enabled = false;
                 //disable player controls
                 playerController.ToggleInputOn(false);//disable input
                 FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls
+                StartGameCameraPan();
             }
         }
         else//level ending elevator
@@ -52,10 +53,12 @@ public class LevelEndTrigger : MonoBehaviour
                 playerController = col.GetComponent<PlayerController>();
                 playerController.ToggleInputOn(false);//disable input
                 FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls
+                playerController.AllowMovement(false);
                 //pan camera to player
                 if(personalVCamOutside != null)
                 {
                     personalVCamOutside.enabled = true;
+                    EndGamePostCameraPan();
                 }
                 else
                 {
@@ -82,6 +85,8 @@ public class LevelEndTrigger : MonoBehaviour
 
     IEnumerator EndGamePostCarAnimation()
     {
+        yield return new WaitForSeconds(0.1f);
+        playerController.AllowMovement(true);
         //wait until car inside
         float dist = Vector3.Distance(new Vector3(playerController.transform.position.x, 0, playerController.transform.position.z), new Vector3(transform.position.x, 0, transform.position.z));
         while(dist > 1)
@@ -94,8 +99,7 @@ public class LevelEndTrigger : MonoBehaviour
         elevatorAnim.SetTrigger("ToggleElevatorState");
         yield return new WaitForSeconds(1f);
         //fix position and rotation
-        playerController.transform.position = new Vector3(transform.position.x, playerController.transform.position.y, transform.position.z);
-        playerController.transform.eulerAngles = new Vector3(0, Mathf.Round(playerController.transform.eulerAngles.y / 90f) * 90, 0);
+        PlaceCarInLift();
         yield return new WaitForSeconds(1f);
         //cut camera to inside
         if(personalVCamInside != null)
@@ -103,8 +107,8 @@ public class LevelEndTrigger : MonoBehaviour
             personalVCamInside.enabled = true;
         }
         playerController.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        //ToDo Win Game Here
-        Debug.Log("ToDo Won Game");
+        //Win Game Here
+        FindObjectOfType<UIScripts>().ShowLevelWinScreen();
     }
 
     //Game Start Functions--------------------------------------------------------------------------------------------------------------------
@@ -113,13 +117,15 @@ public class LevelEndTrigger : MonoBehaviour
     {
         if(isStartgameElevator)
         {
-            playerController.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+            PlaceCarInLift();
             StartCoroutine(StartGamePostCarAnimation());
         }
     }
 
     IEnumerator StartGamePostCarAnimation()
     {
+        yield return new WaitForSeconds(0.1f);
+        playerController.AllowMovement(true);
         yield return new WaitForSeconds(0.5f);
         //Player walk out after doors open
         playerController.isAutomoving = true;
@@ -157,13 +163,29 @@ public class LevelEndTrigger : MonoBehaviour
         //fix position and rotation
         playerController.transform.position = destination;
         playerController.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.1f);
         //create collision on doors
         invisWall.GetComponent<BoxCollider>().enabled = true;
         //re-enable movement
         playerController = FindObjectOfType<PlayerController>();
-        playerController.ToggleInputOn(true);//disable input
-        FindObjectOfType<CinemachineInputProvider>().enabled = true;//disable camera controls
-        
+        playerController.ToggleInputOn(true);//enble input
+        playerController.AllowMovement(true);
+        FindObjectOfType<CinemachineInputProvider>().enabled = true;//enable camera controls
+    }
+
+    //--------------------------------------------------------------------------------------------------------------------------------------
+    public void PlaceCarInLift()
+    {
+        if(playerController != null)//ToDO consider other case
+        {
+            //playerController.transform.position = new Vector3(transform.position.x, playerController.transform.position.y, transform.position.z);
+            playerController.transform.position = new Vector3(transform.position.x, playerYDiff + transform.position.y, transform.position.z);
+            playerController.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+        }
+    }
+
+    public void ActivateIndoorCamera()
+    {
+        personalVCamInside.enabled = true;
     }
 }
