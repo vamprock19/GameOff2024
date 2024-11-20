@@ -152,7 +152,6 @@ public class PatrolNavigation : MonoBehaviour
 
     private void DoNavigating()//Navigating State----------------------------------------------------------------------------------------------------
     {
-        //ToDo consider speed change
         if(((!agent.pathPending) && (agent.remainingDistance < 0.5f)) || (agent.pathStatus == NavMeshPathStatus.PathInvalid))//if navigation destination reached or failed
         {
             currentState = EnemyState.Finding;

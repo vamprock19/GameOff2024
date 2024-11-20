@@ -52,6 +52,10 @@ public class UIScripts : MonoBehaviour
     [SerializeField] private Animator transAnim;
 
 
+    [Header("HUD Components")]
+    [SerializeField] private TextMeshProUGUI hudTimer;
+    public int timePassed = 0;
+
 
     void Start()
     {
@@ -109,7 +113,12 @@ public class UIScripts : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.2f);
         winTime.gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(0.2f);
-        winRecord.gameObject.SetActive(true);
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        if((timePassed < pm.levelTimes[SceneManager.GetActiveScene().buildIndex]) || (pm.levelTimes[SceneManager.GetActiveScene().buildIndex] == -1))
+        {
+            pm.levelTimes[SceneManager.GetActiveScene().buildIndex] = timePassed;
+            winRecord.gameObject.SetActive(true);
+        }
         yield return new WaitForSecondsRealtime(0.2f);
         winNextLevel.gameObject.SetActive(true);
         winNextLevel.Select();
@@ -395,6 +404,7 @@ public class UIScripts : MonoBehaviour
         playerController.AllowMovement(true);
         FindObjectOfType<CinemachineInputProvider>().enabled = true;//enable camera controls
         eveSys.enabled = true;//re-enable ui inputs
+        StartTimer();//start timing
         //Enable enemy fuctionality
         SetAllEnemiesEnableState(true);
     }
@@ -457,7 +467,7 @@ public class UIScripts : MonoBehaviour
         }
     }
     
-    //-----------------------------------------------------------------------------------------Level Loading
+    //-------------------------------------------------------------------------------------------Level Loading
     IEnumerator LoadScene(string sceneName)
     {
         yield return null;
@@ -490,5 +500,24 @@ public class UIScripts : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    //-------------------------------------------------------------------------------------------HUD Functionality
+    public void StartTimer()
+    {
+        timePassed = 0;
+        InvokeRepeating("ClockTickUp", 1, 1);
+    }
+
+    public void StopTimer()
+    {
+        CancelInvoke("ClockTickUp");
+        winTime.text = string.Format("{0:00}:{1:00}:{2:00}", (timePassed / 3600), (timePassed % 3600) /60, (timePassed % 60));
+    }
+    
+    void ClockTickUp()
+    {
+        timePassed++;
+        hudTimer.text = string.Format("{0:00}:{1:00}:{2:00}", (timePassed / 3600), (timePassed % 3600) /60, (timePassed % 60));
     }
 }

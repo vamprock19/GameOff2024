@@ -64,6 +64,7 @@ public class Elevator : MonoBehaviour
                 playerController.ToggleInputOn(false);//disable input
                 FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls
                 playerController.AllowMovement(false);
+                FindObjectOfType<UIScripts>().StopTimer();//stop timing
                 //pan camera to player
                 if(personalVCamOutside != null)
                 {
@@ -181,6 +182,7 @@ public class Elevator : MonoBehaviour
         playerController.ToggleInputOn(true);//enble input
         playerController.AllowMovement(true);
         FindObjectOfType<CinemachineInputProvider>().enabled = true;//enable camera controls
+        FindObjectOfType<UIScripts>().StartTimer();//start timing
     }
 
     //--------------------------------------------------------------------------------------------------------------------------------------
