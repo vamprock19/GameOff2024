@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using Cinemachine;
+using UnityEngine.AI;
 
 public class UIScripts : MonoBehaviour
 {
@@ -34,6 +36,15 @@ public class UIScripts : MonoBehaviour
     private bool isPaused;
     [SerializeField] private Button pauseRetry;
     [SerializeField] private Button pauseHome;
+
+    
+    [Header("Main Menu Components")]
+    public GameObject mainMenuScreen;
+    public bool isMainMenuLevel;
+    [SerializeField] private Button mainStartGame;
+    //[SerializeField] private Button mainLevelSelect;
+    [SerializeField] private CinemachineVirtualCamera mainMenuVCam;
+    private PlayerController playerController;
     
 
     [Header("Transition Components")]
@@ -44,10 +55,45 @@ public class UIScripts : MonoBehaviour
 
     void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
         tempElevator = FindObjectOfType<Elevator>();//find an elevator from this scene to use when restarting
+        //If starting from main menu level
+        playerController = FindObjectOfType<PlayerController>();
+        if(isMainMenuLevel)//if elevator not at level start
+        {
+            playerController.AllowMovement(true);
+            //Disable enemy fuctionality
+            SetAllEnemiesEnableState(false);
+            //Transition in
+            TransitionFromBlack();
+            //cut to main menu camera
+            if(mainMenuVCam != null)
+            {
+                mainMenuVCam.enabled = true;
+                //disable player controls
+                playerController.ToggleInputOn(false);//disable input
+                FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls
+            }
+            //if using main menu or not
+            PersistantManager pm = FindObjectOfType<PersistantManager>();
+            if(pm.startWithoutMainMenu)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                //Coroutine to fade in before playing
+                StartCoroutine(MainMenuSkipActions());
+            }
+            else
+            {
+                //Show Menu
+                ShowMain();
+            }
+        }
+        else//for all other levels
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
+    //Menu showing and hiding function (done like this to make adding transition animations easier) //ToDo Get rid of unneeded coroutines
     //-----------------------------------------------------------------------------------------
     public void ShowLevelWinScreen()
     {
@@ -164,6 +210,30 @@ public class UIScripts : MonoBehaviour
     }
 
     //-----------------------------------------------------------------------------------------
+    public void ShowMain()
+    {
+        StartCoroutine(HandleShowMain());
+    }
+
+    IEnumerator HandleShowMain()
+    {
+        yield return null;
+        mainMenuScreen.SetActive(true);
+    }
+
+    //-----------------------------------------------------------------------------------------
+    public void HideMain()
+    {
+        StartCoroutine(HandleHideMain());
+    }
+
+    IEnumerator HandleHideMain()
+    {
+        yield return null;
+        mainMenuScreen.SetActive(false);
+    }
+
+    //-----------------------------------------------------------------------------------------
     public void TransitionToBlack()
     {
         transAnim.SetTrigger("ToBlack");
@@ -180,13 +250,13 @@ public class UIScripts : MonoBehaviour
         eveSys.enabled = false;//disable inputs
         Cursor.lockState = CursorLockMode.Locked;
         StartCoroutine(NextLevelButtonActions());
-        StartCoroutine(LoadScene("SampleScene"));//ToDo edit level to load
+        StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1));//level to load
     }
 
     IEnumerator NextLevelButtonActions()
     {
         HandleHideLevelWin();
-        //ToDo Load next scene
+        //Load next scene
         yield return new WaitForSecondsRealtime(1f);
         asyncOperation.allowSceneActivation = true;
         yield return new WaitForSecondsRealtime(1f);
@@ -204,6 +274,15 @@ public class UIScripts : MonoBehaviour
     IEnumerator RetryWonLevelButtonActions()
     {
         HandleHideLevelWin();
+        if(isMainMenuLevel)//if the main menu level
+        {
+            //Transition in
+            TransitionToBlack();
+            yield return new WaitForSecondsRealtime(1f);
+        }
+        //in case of loading first level, set whether to show the main menu
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        pm.startWithoutMainMenu = true;
         //Reload this scene
         yield return new WaitForSecondsRealtime(1f);
         asyncOperation.allowSceneActivation = true;
@@ -222,11 +301,7 @@ public class UIScripts : MonoBehaviour
     IEnumerator RetryLostLevelButtonActions()
     {
         //Disable enemy fuctionality to avoid loss triggering mid-transition
-        PatrolNavigation[] patrolEnemies = FindObjectsOfType<PatrolNavigation>();
-        foreach (PatrolNavigation patroler in patrolEnemies)
-        {
-            patroler.enabled = false;
-        }
+        SetAllEnemiesEnableState(false);
         //Transition out
         TransitionToBlack();
         yield return new WaitForSecondsRealtime(1f);
@@ -235,18 +310,23 @@ public class UIScripts : MonoBehaviour
         //Hide Lose Menu AND pause menu if open
         HideLevelLoseScreen();
         HidePause();
-        //Move Car to elevator with correct pose
-        PlayerController playerController = FindObjectOfType<PlayerController>();//disable input
-        playerController.AllowMovement(false);
-        playerController.ToggleInputOn(false);
-        if(tempElevator != null)
+        if(!isMainMenuLevel)//if not the main menu level
         {
-            tempElevator.PlaceCarInLift();
-            tempElevator.ActivateIndoorCamera();
+            //Move Car to elevator with correct pose
+            playerController.AllowMovement(false);
+            playerController.ToggleInputOn(false);
+            if(tempElevator != null)
+            {
+                tempElevator.PlaceCarInLift();
+                tempElevator.ActivateIndoorCamera();
+            }
+            //Transition in
+            TransitionFromBlack();
+            yield return new WaitForSecondsRealtime(1f);
         }
-        //Transition in
-        TransitionFromBlack();
-        yield return new WaitForSecondsRealtime(1f);
+        //in case of loading first level, set whether to show the main menu
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        pm.startWithoutMainMenu = true;
         //Reload this scene
         yield return new WaitForSecondsRealtime(1f);
         asyncOperation.allowSceneActivation = true;
@@ -259,34 +339,146 @@ public class UIScripts : MonoBehaviour
         eveSys.enabled = false;//disable inputs
         Cursor.lockState = CursorLockMode.Locked;
         StartCoroutine(ToMenuButtonActions());
-        StartCoroutine(LoadScene("SampleScene"));//ToDo edit level to load
+        StartCoroutine(LoadScene(0));//level to load
     }
 
     IEnumerator ToMenuButtonActions()
     {
         //Disable enemy fuctionality to avoid loss triggering mid-transition
-        PatrolNavigation[] patrolEnemies = FindObjectsOfType<PatrolNavigation>();
-        foreach (PatrolNavigation patroler in patrolEnemies)
-        {
-            patroler.enabled = false;
-        }
+        SetAllEnemiesEnableState(false);
         //Transition out
         TransitionToBlack();
         yield return new WaitForSecondsRealtime(1f);
         //Ensure timescale is normal(for paused menu)
         Time.timeScale = 1;
-        //ToDo Load Main Menu screen
+        //set to show the main menu
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        pm.startWithoutMainMenu = false;
+        //Load Main Menu screen
         yield return new WaitForSecondsRealtime(1f);
+        Cursor.lockState = CursorLockMode.None;
         asyncOperation.allowSceneActivation = true;
         yield return new WaitForSecondsRealtime(1f);
         missedTheBusLevelLoading = true;
     }
 
+    IEnumerator MainMenuSkipActions()//skip the menu navigation of the main menu
+    {
+        //Hide Menu
+        HideMain();
+        yield return new WaitForSecondsRealtime(2f);
+        //Play level start animation
+        MainToStartButtonPress();
+    }
+
+    public void MainToStartButtonPress()
+    {
+        eveSys.enabled = false;//disable inputs
+        Cursor.lockState = CursorLockMode.Locked;
+        StartCoroutine(MainToStartButtonActions());
+    }
+
+    IEnumerator MainToStartButtonActions()//Start playing main menu level
+    {
+        yield return null;
+        //Hide Menu
+        HideMain();
+        //handle cameras
+        if(mainMenuVCam != null)
+        {
+            mainMenuVCam.enabled = false;
+            yield return new WaitForSecondsRealtime(1.5f);
+        }
+        //re-enable movement
+        playerController = FindObjectOfType<PlayerController>();
+        playerController.ToggleInputOn(true);//enble input
+        playerController.AllowMovement(true);
+        FindObjectOfType<CinemachineInputProvider>().enabled = true;//enable camera controls
+        eveSys.enabled = true;//re-enable ui inputs
+        //Enable enemy fuctionality
+        SetAllEnemiesEnableState(true);
+    }
+
+    public void MainToLevelButtonPress(int levelIndex)//load a level from the main menu
+    {
+        eveSys.enabled = false;//disable inputs
+        Cursor.lockState = CursorLockMode.Locked;
+        StartCoroutine(MainToLevelButtonActions(levelIndex));
+    }
+
+    IEnumerator MainToLevelButtonActions(int levelIndex)
+    {
+        yield return null;
+        //if loading this level, continue as if play was pressed
+        if(levelIndex == 0)
+        {
+            //Play level start animation
+            MainToStartButtonPress();
+        }
+        else
+        {
+            StartCoroutine(LoadScene(levelIndex));//level to load
+            //Transition out
+            TransitionToBlack();
+            yield return new WaitForSecondsRealtime(1f);
+            //Move Car to elevator with correct pose
+            playerController.AllowMovement(false);
+            playerController.ToggleInputOn(false);
+            if(tempElevator != null)
+            {
+                tempElevator.PlaceCarInLift();
+                tempElevator.ActivateIndoorCamera();
+            }
+            mainMenuVCam.enabled = false;
+            //hide menu
+            HideMain();
+            //Transition in
+            TransitionFromBlack();
+            yield return new WaitForSecondsRealtime(1f);
+            //Load level
+            yield return new WaitForSecondsRealtime(1f);
+            Cursor.lockState = CursorLockMode.None;
+            asyncOperation.allowSceneActivation = true;
+            yield return new WaitForSecondsRealtime(1f);
+            missedTheBusLevelLoading = true;
+        }
+        eveSys.enabled = true;//re-enable ui inputs
+    }
+
+    //-------------------------------------------------------------------------------------------Enemy Enable/Disabling
+    private void SetAllEnemiesEnableState(bool newState)
+    {
+        //Set enemy fuctionality to avoid loss triggering mid-transition
+        PatrolNavigation[] patrolEnemies = FindObjectsOfType<PatrolNavigation>();
+        foreach (PatrolNavigation patroller in patrolEnemies)
+        {
+            patroller.enabled = newState;
+            //patroller.GetComponent<NavMeshAgent>().enabled = newState;
+        }
+    }
+    
     //-----------------------------------------------------------------------------------------Level Loading
     IEnumerator LoadScene(string sceneName)
     {
         yield return null;
         asyncOperation = SceneManager.LoadSceneAsync(sceneName);//select level to load
+        //dont activate scene until told
+        asyncOperation.allowSceneActivation = false;
+        //while its not done
+        while (!asyncOperation.isDone)
+        {
+            if(missedTheBusLevelLoading)//if a bug occured due to timing, make sure the next level can still be loaded
+            {
+                asyncOperation.allowSceneActivation = true;
+            }
+            yield return null;
+        }
+    }
+
+    IEnumerator LoadScene(int sceneIndex)
+    {
+        yield return null;
+        asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);//select level to load
         //dont activate scene until told
         asyncOperation.allowSceneActivation = false;
         //while its not done

@@ -12,7 +12,7 @@ public class Elevator : MonoBehaviour
     [SerializeField] private GameObject invisWall;
     private PlayerController playerController;
     public bool isStartgameElevator = false;//is this elevator for the start or end of a level
-    private float playerYDiff = 0.8f;//approx height of player above floor. (Not calculated live to avoid some bugs)
+    private float playerYDiff = 1.08f;//approx height of player above floor. (Not calculated live to avoid some bugs)
 
     //ToDo ensure functionality for when camera pan not working
 
@@ -49,7 +49,17 @@ public class Elevator : MonoBehaviour
         {
             if(PatrolNavigation.gameOverEnemy == null)//stop clash of win and lose condition (only try to win if not losing)
             {
-                PatrolNavigation.gameOverEnemy = new PatrolNavigation();//set static value to stop game losses happening afterwards
+                GameObject temp = new GameObject();
+                PatrolNavigation pn = temp.AddComponent<PatrolNavigation>();
+                pn.enabled = false;
+                PatrolNavigation.gameOverEnemy = pn;//set static value to stop game losses happening afterwards
+                //remove enemy fuctionality to avoid loss triggering
+                PatrolNavigation[] patrolEnemies = FindObjectsOfType<PatrolNavigation>();
+                foreach (PatrolNavigation patroller in patrolEnemies)
+                {
+                    patroller.enabled = false;
+                }
+                //disable movement
                 playerController = col.GetComponent<PlayerController>();
                 playerController.ToggleInputOn(false);//disable input
                 FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls

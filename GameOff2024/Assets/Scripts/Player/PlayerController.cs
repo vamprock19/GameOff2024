@@ -88,6 +88,7 @@ public class PlayerController : MonoBehaviour
                     HandleAutoMovement();
                 }
                 playerAnim.SetBool("isWalking", (autoDestinationQueue.Count >= 1));
+                playerAnim.SetBool("isSprinting", false);
             }
             if(verticalVelocity < -10)//if falling
             {
@@ -248,6 +249,7 @@ public class PlayerController : MonoBehaviour
             {
                 autoDestinationQueue.RemoveAt(0);
                 autoDestTimeout = 0;
+                movementToApply = new Vector3(0, 0, 0);//zero movement
                 if(autoDestinationQueue.Count == 0)
                 {
                     isAutomoving = false;
@@ -261,6 +263,7 @@ public class PlayerController : MonoBehaviour
                 {
                     autoDestinationQueue.RemoveAt(0);
                     autoDestTimeout = 0;
+                    movementToApply = new Vector3(0, 0, 0);//zero movement
                     if(autoDestinationQueue.Count == 0)
                     {
                         isAutomoving = false;
