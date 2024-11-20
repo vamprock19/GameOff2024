@@ -50,6 +50,11 @@ public class PatrolNavigation : MonoBehaviour
 
     [Header("Stun")]
     [SerializeField] private EnemyConeDetection torchLight;
+    public GameObject stunIcon;
+    [SerializeField] private float stunDuration = 3;
+    private bool isStunned;
+    private float stunTimer;
+    [SerializeField] private GameObject stunMask;
 
     [Header("Disguise")]//success of diguise calculated using prime numbers
     public DisguiseGroups disguiseNeeded = DisguiseGroups.None;//id of disguise needed by player to avoid detection by this when still.  1 - none, 2 - red, 3 - blue, 5 - green, 7 - yellow
@@ -114,11 +119,21 @@ public class PatrolNavigation : MonoBehaviour
 
     void FixedUpdate()
     {
-        //have icon always face player
+        //have icons always face player
         suspicionIcon.transform.LookAt(playerCamera.transform);
-        //set mask height
+        stunIcon.transform.LookAt(playerCamera.transform);
+        //set mask heights (and color)
         suspicionMask.transform.localPosition = new Vector3(0, (Mathf.Min(suspicionMeter, 100) * 0.09f) + 0.5f, 0);
         suspicionIconRenderer.color = Color.HSVToRGB((60 - (Mathf.Min(suspicionMeter, 100) * 0.6f))/360f, 0.95f, 0.95f);
+        stunMask.transform.localPosition = new Vector3(0, (Mathf.Min(stunTimer, stunDuration) * (9f / stunDuration)) + 0.5f, 0);
+        if(isStunned)
+        {
+            stunTimer -= Time.fixedDeltaTime;
+            if(stunTimer < 0)
+            {
+                stunTimer = 0;
+            }
+        }
     }
 
     //State Functions++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -140,6 +155,8 @@ public class PatrolNavigation : MonoBehaviour
         enemyAnim.SetBool("isWalking", true);
         enemyAnim.SetBool("isDizzy", false);
         patrolPointer = (patrolPointer + 1) % patrolPath.Length;
+        stunIcon.SetActive(false);
+        isStunned = false;
     }
 
     private void DoPatroling()//Patrolling State----------------------------------------------------------------------------------------------------
@@ -275,7 +292,10 @@ public class PatrolNavigation : MonoBehaviour
         agent.speed = defaultSpeed;
         torchLight.TurnOffTorch();
         torchLight.gameObject.SetActive(false);//turn off torch
-        Invoke("MoveToNextWaypoint", 5);//return to patrol
+        Invoke("MoveToNextWaypoint", stunDuration);//return to patrol
+        //start stun icon animation
+        isStunned = true;
+        stunTimer = stunDuration;
         currentState = EnemyState.NullState;
     }
 
@@ -286,6 +306,7 @@ public class PatrolNavigation : MonoBehaviour
         enemyAnim.SetBool("isDizzy", true);
         suspicionMeter = 0;
         suspicionIcon.SetActive(false);
+        stunIcon.SetActive(true);
         CancelInvoke();
         agent.speed = defaultSpeed;
         currentState = EnemyState.Stunned;
@@ -308,10 +329,12 @@ public class PatrolNavigation : MonoBehaviour
                 agent.ResetPath();
                 player.GetComponent<PlayerController>().ToggleInputOn(false);//disable input
                 FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls
+                FindObjectOfType<UIScripts>().HUDOut();//turn off hud
                 //pan camera to player
                 if(personalVCam != null)
                 {
                     personalVCam.enabled = true;
+                    EndGamePostCameraPan();
                 }
                 else
                 {

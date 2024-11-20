@@ -53,8 +53,11 @@ public class UIScripts : MonoBehaviour
 
 
     [Header("HUD Components")]
+    [SerializeField] private Animator hudAnim;
     [SerializeField] private TextMeshProUGUI hudTimer;
     public int timePassed = 0;
+    public GameObject abilityFlashBox;
+    public Image abilityFlashImage;
 
 
     void Start()
@@ -228,6 +231,7 @@ public class UIScripts : MonoBehaviour
     {
         yield return null;
         mainMenuScreen.SetActive(true);
+        mainStartGame.Select();
     }
 
     //-----------------------------------------------------------------------------------------
@@ -251,6 +255,17 @@ public class UIScripts : MonoBehaviour
     public void TransitionFromBlack()
     {
         transAnim.SetTrigger("FromBlack");
+    }
+
+    //-----------------------------------------------------------------------------------------
+    public void HUDOut()
+    {
+        hudAnim.SetTrigger("HudOut");
+    }
+
+    public void HUDIn()
+    {
+        hudAnim.SetTrigger("HudIn");
     }
 
     //-----------------------------------------------------------------------------------------Button Functions
@@ -313,6 +328,7 @@ public class UIScripts : MonoBehaviour
         SetAllEnemiesEnableState(false);
         //Transition out
         TransitionToBlack();
+        HUDOut();//turn off hud
         yield return new WaitForSecondsRealtime(1f);
         //Ensure timescale is normal(for paused menu)
         Time.timeScale = 1;
@@ -392,6 +408,7 @@ public class UIScripts : MonoBehaviour
         yield return null;
         //Hide Menu
         HideMain();
+        HUDIn();//turn on hud
         //handle cameras
         if(mainMenuVCam != null)
         {
@@ -519,5 +536,21 @@ public class UIScripts : MonoBehaviour
     {
         timePassed++;
         hudTimer.text = string.Format("{0:00}:{1:00}:{2:00}", (timePassed / 3600), (timePassed % 3600) /60, (timePassed % 60));
+    }
+
+    public void HudButtonPressPulse(GameObject button)//when the button for an ability is pressed
+    {
+        if(button.GetComponent<Animator>() != null)
+        {
+            button.GetComponent<Animator>().SetTrigger("Pulse");
+        }
+    }
+
+    public void HudButtonPressFail(GameObject button)//when the button for an ability is pressed but fails
+    {
+        if(button.GetComponent<Animator>() != null)
+        {
+            button.GetComponent<Animator>().SetTrigger("Red");
+        }
     }
 }

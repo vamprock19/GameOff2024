@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CinemachineFreeLook mainVCam;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Animator playerAnim;
+    private UIScripts ui;
 
 
     [Header("Movement")]
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         playerLocomotionInput = GetComponent<PlayerLocomotionInput>();
+        ui = FindObjectOfType<UIScripts>();
     }
 
     private void Update()
@@ -60,7 +62,7 @@ public class PlayerController : MonoBehaviour
         //pause game
         if(playerLocomotionInput.PausePressed)
         {
-            FindObjectOfType<UIScripts>().TogglePause();
+            ui.TogglePause();
             mainVCam.enabled = !mainVCam.enabled;
         }
         if(mainVCam.enabled)//if not paused
@@ -196,13 +198,21 @@ public class PlayerController : MonoBehaviour
     private void HandleFlash()
     {
         flashCooldownTimer -= Time.deltaTime;
-        if(flashCooldownTimer <= 0)
+        //set visual cooldown
+        ui.abilityFlashImage.fillAmount = flashCooldownTimer / flashCooldown;//ToDo ensure flashcooldown is never 0
+        //if flash pressed
+        if(playerLocomotionInput.FlashPressed)
         {
-            if(playerLocomotionInput.FlashPressed)
+            if(flashCooldownTimer <= 0)
             {
                 playerAnim.SetTrigger("Flash");
                 flashCooldownTimer = flashCooldown;
-                
+                ui.HudButtonPressPulse(ui.abilityFlashBox);//ability press animation
+            }
+            else//if cannot flash, but tried to
+            {
+                //show failed attempt to use
+                ui.HudButtonPressFail(ui.abilityFlashBox);
             }
         }
     }

@@ -65,7 +65,8 @@ public class Elevator : MonoBehaviour
                 FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls
                 playerController.AllowMovement(false);
                 FindObjectOfType<UIScripts>().StopTimer();//stop timing
-                //pan camera to player
+                FindObjectOfType<UIScripts>().HUDOut();//turn off hud
+                //pan camera to outside lift
                 if(personalVCamOutside != null)
                 {
                     personalVCamOutside.enabled = true;
@@ -174,6 +175,7 @@ public class Elevator : MonoBehaviour
         //fix position and rotation
         playerController.transform.position = destination;
         playerController.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
+        FindObjectOfType<UIScripts>().HUDIn();//turn on hud
         yield return new WaitForSeconds(1.1f);
         //create collision on doors
         invisWall.GetComponent<BoxCollider>().enabled = true;

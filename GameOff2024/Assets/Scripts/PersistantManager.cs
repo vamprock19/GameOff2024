@@ -22,7 +22,7 @@ public class PersistantManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         //create empty list of player times
-        Debug.Log("Scene Count: " + SceneManager.sceneCountInBuildSettings);
+        Debug.Log("Scene Count: " + SceneManager.sceneCountInBuildSettings);//ToDo Remove
         for(int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
         {
             levelTimes.Add(-1);
