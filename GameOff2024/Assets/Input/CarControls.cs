@@ -65,6 +65,14 @@ public class @CarControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Beep"",
+                    ""type"": ""Button"",
+                    ""id"": ""d44e6b5d-4e92-4935-919f-e3d7e9c79aba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -179,6 +187,116 @@ public class @CarControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""Arrows"",
+                    ""id"": ""0bc29de3-b766-409a-beb8-5f84654473aa"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""9f591da9-afe5-45a8-a046-754c8485b5a2"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""1af50e14-ed9b-49ef-a1e6-271620736467"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""f48fc371-23d5-4cc4-a82f-3f16c2c49c40"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""c81257e7-2a5c-4694-a5a3-28091915d59f"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""D Pad"",
+                    ""id"": ""defc631b-cfdd-4442-85e9-9f2dd6d414be"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""9129d38c-9151-46c6-9b3c-725eecdb99a1"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""f671a3a5-9762-4396-bab0-347e6e82bbec"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""e4e5eefd-7b6e-46b9-b2e4-a0f4475b49d8"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""3934c5a0-f2f2-42e6-af4a-2c1e06564025"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Movement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": """",
                     ""id"": ""2867eb4b-bdf5-49a6-8796-a08355a19af4"",
                     ""path"": ""<Mouse>/delta"",
@@ -247,7 +365,7 @@ public class @CarControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4e912a74-b9e3-44ee-8aeb-2d09f2497b1b"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -258,7 +376,7 @@ public class @CarControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""d3a28b1e-fdd3-4593-972e-5809e313eac9"",
-                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -287,6 +405,28 @@ public class @CarControls : IInputActionCollection, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""35c5c85b-f809-4bb4-ad6e-78812d5256c6"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Beep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20b26c63-7dfa-4ca0-b906-4d22a2bf77b8"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Beep"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -301,6 +441,7 @@ public class @CarControls : IInputActionCollection, IDisposable
         m_PlayerLocomotionMap_Sprint = m_PlayerLocomotionMap.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerLocomotionMap_Flash = m_PlayerLocomotionMap.FindAction("Flash", throwIfNotFound: true);
         m_PlayerLocomotionMap_Pause = m_PlayerLocomotionMap.FindAction("Pause", throwIfNotFound: true);
+        m_PlayerLocomotionMap_Beep = m_PlayerLocomotionMap.FindAction("Beep", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -356,6 +497,7 @@ public class @CarControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerLocomotionMap_Sprint;
     private readonly InputAction m_PlayerLocomotionMap_Flash;
     private readonly InputAction m_PlayerLocomotionMap_Pause;
+    private readonly InputAction m_PlayerLocomotionMap_Beep;
     public struct PlayerLocomotionMapActions
     {
         private @CarControls m_Wrapper;
@@ -366,6 +508,7 @@ public class @CarControls : IInputActionCollection, IDisposable
         public InputAction @Sprint => m_Wrapper.m_PlayerLocomotionMap_Sprint;
         public InputAction @Flash => m_Wrapper.m_PlayerLocomotionMap_Flash;
         public InputAction @Pause => m_Wrapper.m_PlayerLocomotionMap_Pause;
+        public InputAction @Beep => m_Wrapper.m_PlayerLocomotionMap_Beep;
         public InputActionMap Get() { return m_Wrapper.m_PlayerLocomotionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -393,6 +536,9 @@ public class @CarControls : IInputActionCollection, IDisposable
                 @Pause.started -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnPause;
                 @Pause.performed -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnPause;
                 @Pause.canceled -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnPause;
+                @Beep.started -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnBeep;
+                @Beep.performed -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnBeep;
+                @Beep.canceled -= m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface.OnBeep;
             }
             m_Wrapper.m_PlayerLocomotionMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -415,6 +561,9 @@ public class @CarControls : IInputActionCollection, IDisposable
                 @Pause.started += instance.OnPause;
                 @Pause.performed += instance.OnPause;
                 @Pause.canceled += instance.OnPause;
+                @Beep.started += instance.OnBeep;
+                @Beep.performed += instance.OnBeep;
+                @Beep.canceled += instance.OnBeep;
             }
         }
     }
@@ -427,5 +576,6 @@ public class @CarControls : IInputActionCollection, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnFlash(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnBeep(InputAction.CallbackContext context);
     }
 }

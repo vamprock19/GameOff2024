@@ -33,8 +33,11 @@ public class PlayerController : MonoBehaviour
     private Vector3 movementToApply;
 
     [Header("Abilities")]
-    [SerializeField] float flashCooldown = 1;
+    public bool isMidAbility = false;
+    [SerializeField] float flashCooldown = 10;
     private float flashCooldownTimer;
+    [SerializeField] float beepCooldown = 1;
+    private float beepCooldownTimer;
     public int disguisesOwned = 1;
     public bool isTryingToHide = true;
 
@@ -76,6 +79,7 @@ public class PlayerController : MonoBehaviour
                     HandleCameraAndMovement();
                 }
                 HandleFlash();
+                HandleBeep();
 
                 //set animation parameters
                 playerAnim.SetBool("isWalking", (playerLocomotionInput.MovementInput.magnitude > 0.1f));
@@ -203,7 +207,7 @@ public class PlayerController : MonoBehaviour
         //if flash pressed
         if(playerLocomotionInput.FlashPressed)
         {
-            if(flashCooldownTimer <= 0)
+            if((flashCooldownTimer <= 0) && (!isMidAbility))
             {
                 playerAnim.SetTrigger("Flash");
                 flashCooldownTimer = flashCooldown;
@@ -213,6 +217,28 @@ public class PlayerController : MonoBehaviour
             {
                 //show failed attempt to use
                 ui.HudButtonPressFail(ui.abilityFlashBox);
+            }
+        }
+    }
+
+    private void HandleBeep()
+    {
+        beepCooldownTimer -= Time.deltaTime;
+        //set visual cooldown
+        ui.abilityBeepImage.fillAmount = beepCooldownTimer / beepCooldown;//ToDo ensure beepcooldown is never 0
+        //if beep pressed
+        if(playerLocomotionInput.BeepPressed)
+        {
+            if((beepCooldownTimer <= 0) && (!isMidAbility))
+            {
+                playerAnim.SetTrigger("Beep");
+                beepCooldownTimer = beepCooldown;
+                ui.HudButtonPressPulse(ui.abilityBeepBox);//ability press animation
+            }
+            else//if cannot flash, but tried to
+            {
+                //show failed attempt to use
+                ui.HudButtonPressFail(ui.abilityBeepBox);
             }
         }
     }

@@ -126,6 +126,7 @@ public class PatrolNavigation : MonoBehaviour
         suspicionMask.transform.localPosition = new Vector3(0, (Mathf.Min(suspicionMeter, 100) * 0.09f) + 0.5f, 0);
         suspicionIconRenderer.color = Color.HSVToRGB((60 - (Mathf.Min(suspicionMeter, 100) * 0.6f))/360f, 0.95f, 0.95f);
         stunMask.transform.localPosition = new Vector3(0, (Mathf.Min(stunTimer, stunDuration) * (9f / stunDuration)) + 0.5f, 0);
+        //stun time
         if(isStunned)
         {
             stunTimer -= Time.fixedDeltaTime;

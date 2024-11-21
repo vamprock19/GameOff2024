@@ -12,6 +12,7 @@ public class PlayerLocomotionInput : MonoBehaviour, CarControls.IPlayerLocomotio
     public bool JumpPressed { get; private set; }
     public float SprintInput { get; private set; }
     public bool FlashPressed { get; private set; }
+    public bool BeepPressed { get; private set; }
     public bool PausePressed { get; private set; }
 
     //Set up input system
@@ -34,6 +35,7 @@ public class PlayerLocomotionInput : MonoBehaviour, CarControls.IPlayerLocomotio
     {
         JumpPressed = false;//stop jumping
         FlashPressed = false;//stop flashing
+        BeepPressed = false;//stop beeping
         PausePressed = false;
     }
 
@@ -69,6 +71,15 @@ public class PlayerLocomotionInput : MonoBehaviour, CarControls.IPlayerLocomotio
             return;
         }
         FlashPressed = true;
+    }
+
+    public void OnBeep(InputAction.CallbackContext context)
+    {
+        if(!context.performed)
+        {
+            return;
+        }
+        BeepPressed = true;
     }
 
     public void OnPause(InputAction.CallbackContext context)

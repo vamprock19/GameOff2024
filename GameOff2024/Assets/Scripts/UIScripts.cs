@@ -58,6 +58,8 @@ public class UIScripts : MonoBehaviour
     public int timePassed = 0;
     public GameObject abilityFlashBox;
     public Image abilityFlashImage;
+    public GameObject abilityBeepBox;
+    public Image abilityBeepImage;
 
 
     void Start()
