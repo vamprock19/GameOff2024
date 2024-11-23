@@ -143,7 +143,7 @@ public class PatrolNavigation : MonoBehaviour
         agent.ResetPath();
         CancelInvoke();
         agent.speed = defaultSpeed;
-        Invoke("MoveToNextWaypoint", 1);//return to patrol
+        Invoke("MoveToNextWaypoint", 0.5f);//return to patrol
         enemyAnim.SetBool("isWalking", false);
         currentState = EnemyState.NullState;
     }
@@ -225,7 +225,7 @@ public class PatrolNavigation : MonoBehaviour
         {
             suspicionMeter = 0;
             suspicionIcon.SetActive(false);
-            Invoke("MoveToNextWaypoint", 1);//return to patrol after 1 second
+            Invoke("MoveToNextWaypoint", 0.5f);//return to patrol after 1 second
             currentState = EnemyState.NullState;
         }
     }
