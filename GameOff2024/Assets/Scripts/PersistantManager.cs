@@ -10,6 +10,8 @@ public class PersistantManager : MonoBehaviour
     public bool startWithoutMainMenu = false;//if when loading the main menu, the menu should be shown or skipped
     
     public List<int> levelTimes = new List<int>();//record times for (potential) levels
+    public int sensValue = 5;
+    public int volValue = 10;
 
     private void Awake()
     {

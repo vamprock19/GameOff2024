@@ -36,15 +36,18 @@ public class UIScripts : MonoBehaviour
     private bool isPaused;
     [SerializeField] private Button pauseRetry;
     [SerializeField] private Button pauseHome;
+    [SerializeField] private Slider sensSlide;
+    [SerializeField] private Slider volSlide;
 
     
     [Header("Main Menu Components")]
     public GameObject mainMenuScreen;
     public bool isMainMenuLevel;
     [SerializeField] private Button mainStartGame;
-    //[SerializeField] private Button mainLevelSelect;
     [SerializeField] private CinemachineVirtualCamera mainMenuVCam;
     private PlayerController playerController;
+    [SerializeField] private Slider sensSlideSettings;
+    [SerializeField] private Slider volSlideSettings;
     
 
     [Header("Transition Components")]
@@ -64,7 +67,18 @@ public class UIScripts : MonoBehaviour
 
     void Start()
     {
-        tempElevator = FindObjectOfType<Elevator>();//find an elevator from this scene to use when restarting
+        //set settings values
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        //Set slider value
+        sensSlide.value = pm.sensValue;
+        sensSlideSettings.value = pm.sensValue;
+        UpdateSens();
+        //Set volume value
+        volSlide.value = pm.volValue;
+        volSlideSettings.value = pm.volValue;
+        UpdateVol();
+        //find an elevator from this scene to use when restarting
+        tempElevator = FindObjectOfType<Elevator>();
         //If starting from main menu level
         playerController = FindObjectOfType<PlayerController>();
         if(isMainMenuLevel)//if elevator not at level start
@@ -83,7 +97,6 @@ public class UIScripts : MonoBehaviour
                 FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls
             }
             //if using main menu or not
-            PersistantManager pm = FindObjectOfType<PersistantManager>();
             if(pm.startWithoutMainMenu)
             {
                 Cursor.lockState = CursorLockMode.Locked;
@@ -554,5 +567,49 @@ public class UIScripts : MonoBehaviour
         {
             button.GetComponent<Animator>().SetTrigger("Red");
         }
+    }
+
+    //-------------------------------------------------------------------------------------------Settings
+    public void UpdateSens()//update the camera sensitivity
+    {
+        int newVal = 10;
+        if(mainMenuScreen.activeSelf)
+        {
+            newVal = (int)sensSlideSettings.value;
+            sensSlide.value = newVal;
+        }
+        else
+        {
+            newVal = (int)sensSlide.value;
+            sensSlideSettings.value = newVal;
+        }
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        pm.sensValue = newVal;
+        if(playerController != null)
+        {
+            if(playerController.mainVCam != null)
+            {
+                playerController.mainVCam.m_XAxis.m_MaxSpeed = newVal * 0.02f;
+                playerController.mainVCam.m_YAxis.m_MaxSpeed = newVal * 0.0002f;
+            }
+        }
+    }
+
+    public void UpdateVol()//update the game volume
+    {
+        int newVal = 10;
+        if(mainMenuScreen.activeSelf)
+        {
+            newVal = (int)volSlideSettings.value;
+            volSlide.value = newVal;
+        }
+        else
+        {
+            newVal = (int)volSlide.value;
+            volSlideSettings.value = newVal;
+        }
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        pm.volValue = newVal;
+        //ToDo apply volume slider change
     }
 }

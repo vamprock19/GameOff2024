@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private CharacterController characterController;
-    [SerializeField] private CinemachineFreeLook mainVCam;
+    public CinemachineFreeLook mainVCam;
     [SerializeField] private Camera playerCamera;
     [SerializeField] private Animator playerAnim;
     private UIScripts ui;
@@ -57,6 +57,15 @@ public class PlayerController : MonoBehaviour
     {
         playerLocomotionInput = GetComponent<PlayerLocomotionInput>();
         ui = FindObjectOfType<UIScripts>();
+        //avoid divide by 0
+        if(flashCooldown <= 0)
+        {
+            flashCooldown = 1;
+        }
+        if(beepCooldown <= 0)
+        {
+            beepCooldown = 1;
+        }
     }
 
     private void Update()
@@ -203,7 +212,7 @@ public class PlayerController : MonoBehaviour
     {
         flashCooldownTimer -= Time.deltaTime;
         //set visual cooldown
-        ui.abilityFlashImage.fillAmount = flashCooldownTimer / flashCooldown;//ToDo ensure flashcooldown is never 0
+        ui.abilityFlashImage.fillAmount = flashCooldownTimer / flashCooldown;
         //if flash pressed
         if(playerLocomotionInput.FlashPressed)
         {
@@ -225,7 +234,7 @@ public class PlayerController : MonoBehaviour
     {
         beepCooldownTimer -= Time.deltaTime;
         //set visual cooldown
-        ui.abilityBeepImage.fillAmount = beepCooldownTimer / beepCooldown;//ToDo ensure beepcooldown is never 0
+        ui.abilityBeepImage.fillAmount = beepCooldownTimer / beepCooldown;
         //if beep pressed
         if(playerLocomotionInput.BeepPressed)
         {

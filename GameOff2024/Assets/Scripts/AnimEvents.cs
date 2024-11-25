@@ -38,7 +38,7 @@ public class AnimEvents : MonoBehaviour
     public void BeepStart()
     {
         //from players position, get all colliders within radius
-        Collider[] hitCols = Physics.OverlapSphere(player.transform.position, 65);
+        Collider[] hitCols = Physics.OverlapSphere(player.transform.position, 50);
         foreach(Collider col in hitCols)
         {
             if(col.GetComponent<PatrolNavigation>() != null)//if collider is a patrolling enemy
