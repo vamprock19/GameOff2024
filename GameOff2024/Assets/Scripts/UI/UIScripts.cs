@@ -88,7 +88,7 @@ public class UIScripts : MonoBehaviour
         }
         if(levelTimeRecords.Count != pm.levelTimes.Count)
         {
-            Debug.LogError("Mismatch in number of levels and assigned record displays: Please make sure all records are shown on menu");
+            Debug.LogError("Mismatch in number of levels and assigned record displays: Please make sure all records are shown on menu: " + levelTimeRecords.Count + " displays - " + pm.levelTimes.Count + " records");
         }
         //Set slider value
         sensSlide.value = pm.sensValue;
@@ -102,7 +102,7 @@ public class UIScripts : MonoBehaviour
         tempElevator = FindObjectOfType<Elevator>();
         //If starting from main menu level
         playerController = FindObjectOfType<PlayerController>();
-        if(isMainMenuLevel)//if elevator not at level start
+        if(isMainMenuLevel)//if elevator not at level start (first level)
         {
             playerController.AllowMovement(true);
             //Disable enemy fuctionality

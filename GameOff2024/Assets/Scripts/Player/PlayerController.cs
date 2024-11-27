@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     [Header("Vertical Movement")]
     private float gravity = -9.81f;
     [SerializeField] float gravMult = 3;
+    private float tempGravMult;
     private float verticalVelocity = 0;
     [SerializeField] float jumpStrength;
     private float coyoteTime;
@@ -40,6 +41,8 @@ public class PlayerController : MonoBehaviour
     private float beepCooldownTimer;
     public int disguisesOwned = 1;
     public bool isTryingToHide = true;
+    public bool flashUnlocked = true;
+    public bool beepUnlocked = true;
 
     [Header("Auto-Movement")]
     public bool isAutomoving = false;
@@ -73,6 +76,7 @@ public class PlayerController : MonoBehaviour
         {
             beepCooldown = 1;
         }
+        tempGravMult = gravMult;
     }
 
     private void Update()
@@ -166,10 +170,12 @@ public class PlayerController : MonoBehaviour
             }
             verticalVelocity = -1;
             playerAnim.SetBool("isFalling", false);
+            tempGravMult = gravMult;
         }
         else
         {
-            verticalVelocity += gravity * gravMult * Time.deltaTime;
+            tempGravMult = tempGravMult + 0.15f;
+            verticalVelocity += gravity * tempGravMult * Time.deltaTime;
         }
     }
 
@@ -229,7 +235,7 @@ public class PlayerController : MonoBehaviour
         //if flash pressed
         if(playerLocomotionInput.FlashPressed)
         {
-            if((flashCooldownTimer <= 0) && (!isMidAbility))
+            if((flashCooldownTimer <= 0) && (!isMidAbility) && (flashUnlocked))
             {
                 playerAnim.SetTrigger("Flash");
                 flashCooldownTimer = flashCooldown;
@@ -253,7 +259,7 @@ public class PlayerController : MonoBehaviour
         //if beep pressed
         if(playerLocomotionInput.BeepPressed)
         {
-            if((beepCooldownTimer <= 0) && (!isMidAbility))
+            if((beepCooldownTimer <= 0) && (!isMidAbility) && (beepUnlocked))
             {
                 playerAnim.SetTrigger("Beep");
                 beepCooldownTimer = beepCooldown;
