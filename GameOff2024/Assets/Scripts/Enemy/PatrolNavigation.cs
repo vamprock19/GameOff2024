@@ -42,6 +42,7 @@ public class PatrolNavigation : MonoBehaviour
     [SerializeField] private GameObject suspicionMask;
     [HideInInspector] public static PatrolNavigation gameOverEnemy;//a variable shared between PatrolNavigation instances to identify which enemy ended the game
     [SerializeField] private CinemachineVirtualCamera personalVCam;
+    public GameObject suspicionIconMinimap;
 
     [Header("Patrol Route")]
     [SerializeField] private Transform[] patrolPath;
@@ -55,6 +56,7 @@ public class PatrolNavigation : MonoBehaviour
     private bool isStunned;
     private float stunTimer;
     [SerializeField] private GameObject stunMask;
+    public GameObject stunIconMinimap;
 
     [Header("Disguise")]//success of diguise calculated using prime numbers
     public DisguiseGroups disguiseNeeded = DisguiseGroups.None;//id of disguise needed by player to avoid detection by this when still.  1 - none, 2 - red, 3 - blue, 5 - green, 7 - yellow
@@ -170,6 +172,7 @@ public class PatrolNavigation : MonoBehaviour
         enemyAnim.SetBool("isDizzy", false);
         patrolPointer = (patrolPointer + 1) % patrolPath.Length;
         stunIcon.SetActive(false);
+        stunIconMinimap.SetActive(false);
         isStunned = false;
     }
 
@@ -207,6 +210,7 @@ public class PatrolNavigation : MonoBehaviour
         agent.SetDestination(searchLocation);//go to navigate location
         enemyAnim.SetBool("isWalking", true);
         suspicionIcon.SetActive(true);
+        suspicionIconMinimap.SetActive(true);
     }
 
     public void DelayedNavigation(Vector3 searchLocation)
@@ -239,6 +243,7 @@ public class PatrolNavigation : MonoBehaviour
         {
             suspicionMeter = 0;
             suspicionIcon.SetActive(false);
+            suspicionIconMinimap.SetActive(false);
             suspicionSound.Stop();
             Invoke("MoveToNextWaypoint", 0.5f);//return to patrol after 1 second
             currentState = EnemyState.NullState;
@@ -263,6 +268,7 @@ public class PatrolNavigation : MonoBehaviour
         //increment suspicion meter
         suspicionMeter += (Time.deltaTime * suspicionRate);
         suspicionIcon.SetActive(true);
+        suspicionIconMinimap.SetActive(true);
         CheckForEndGame();
     }
 
@@ -325,7 +331,9 @@ public class PatrolNavigation : MonoBehaviour
         suspicionMeter = 0;
         suspicionSound.Stop();
         suspicionIcon.SetActive(false);
+        suspicionIconMinimap.SetActive(false);
         stunIcon.SetActive(true);
+        stunIconMinimap.SetActive(true);
         CancelInvoke();
         agent.speed = defaultSpeed;
         currentState = EnemyState.Stunned;

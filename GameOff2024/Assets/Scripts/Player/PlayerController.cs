@@ -49,6 +49,7 @@ public class PlayerController : MonoBehaviour
     [Header("Camera")]
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
+    [SerializeField] private Camera birdsEyeMinimap;
 
     [Header("Sound Effects")]
     [SerializeField] private AudioSource abilitySound;
@@ -152,6 +153,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        birdsEyeMinimap.transform.eulerAngles = new Vector3(birdsEyeMinimap.transform.eulerAngles.x, playerCamera.transform.eulerAngles.y, birdsEyeMinimap.transform.eulerAngles.z);
     }
 
     private void HandleGravity()//calculate downward force
