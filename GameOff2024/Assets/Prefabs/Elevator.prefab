@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 586859211414915900}
   - component: {fileID: 5855118476564199391}
   - component: {fileID: 6398932473266067466}
+  - component: {fileID: 1280588913111362117}
   m_Layer: 0
   m_Name: Elevator
   m_TagString: Untagged
@@ -29,6 +30,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -11.373623, y: 0, z: -55.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8295240703348594401}
   - {fileID: 2519885481384143590}
@@ -41,7 +43,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &586859211414915900
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -54,10 +56,12 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &5855118476564199391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76,6 +80,7 @@ MonoBehaviour:
   outdoorLocation: {fileID: 3357909590260055730}
   invisWall: {fileID: 6504141554657034009}
   isStartgameElevator: 0
+  elevatorCloseSound: {fileID: 1280588913111362117}
 --- !u!65 &6398932473266067466
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -89,6 +94,102 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 7, y: 7, z: 7}
   m_Center: {x: 0, y: 3.556948, z: 9.203003}
+--- !u!82 &1280588913111362117
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 352855848544885957}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 8a04a1601eb026940aecd341871ad3a8, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 7bc747c78d0090a4eac160c43b4f6fc7, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &802849902361405894
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,6 +217,7 @@ Transform:
   m_LocalRotation: {x: 0.15782188, y: 0.91093117, z: -0.2678406, w: 0.2712161}
   m_LocalPosition: {x: -2, y: 4, z: 5.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1147404374052909353}
   m_Father: {fileID: 1129919905229932159}
@@ -147,7 +249,10 @@ MonoBehaviour:
     NearClipPlane: 0.1
     FarClipPlane: 200
     Dutch: 0
+    ModeOverride: 0
     LensShift: {x: 0, y: 0}
+    GateFit: 2
+    m_SensorSize: {x: 1, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -182,6 +287,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 7}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1129919905229932159}
   m_RootOrder: 3
@@ -213,6 +319,7 @@ Transform:
   m_LocalRotation: {x: -0.027357941, y: -0.9726204, z: 0.16645642, w: 0.15985423}
   m_LocalPosition: {x: -28.895416, y: -18.36493, z: -28.961899}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5731745874375054856}
   m_RootOrder: 0
@@ -255,6 +362,7 @@ Transform:
   m_LocalRotation: {x: -0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0.02299999, y: 0.022499999, z: 0.0565}
   m_LocalScale: {x: 1, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5159743518312062903}
   m_RootOrder: 1
@@ -285,6 +393,7 @@ Transform:
   m_LocalRotation: {x: -0.5, y: -0.5, z: -0.5, w: 0.5}
   m_LocalPosition: {x: -0.022999994, y: 0.022499999, z: 0.0565}
   m_LocalScale: {x: 1, y: 0.99999994, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5159743518312062903}
   m_RootOrder: 0
@@ -316,6 +425,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1129919905229932159}
   m_RootOrder: 1
@@ -331,6 +441,7 @@ SkinnedMeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -402,6 +513,7 @@ Transform:
   m_LocalRotation: {x: 0.010172539, y: 0.9876853, z: 0.13188364, w: 0.083553106}
   m_LocalPosition: {x: -2, y: 1, z: 15}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6668436945082537366}
   m_Father: {fileID: 1129919905229932159}
@@ -433,7 +545,10 @@ MonoBehaviour:
     NearClipPlane: 0.1
     FarClipPlane: 200
     Dutch: 0
+    ModeOverride: 0
     LensShift: {x: 0, y: 0}
+    GateFit: 2
+    m_SensorSize: {x: 1, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -469,6 +584,7 @@ Transform:
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071067}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7020646963318166265}
   - {fileID: 542413685832997330}
@@ -515,6 +631,7 @@ Transform:
   m_LocalRotation: {x: -0.027357941, y: -0.9726204, z: 0.16645642, w: 0.15985423}
   m_LocalPosition: {x: -28.895416, y: -18.36493, z: -28.961899}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8533288270113453975}
   m_RootOrder: 0
@@ -558,6 +675,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1129919905229932159}
   m_RootOrder: 5
@@ -601,6 +719,7 @@ Transform:
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 100, y: 100, z: 100}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5159743518312062903}
   m_Father: {fileID: 1129919905229932159}

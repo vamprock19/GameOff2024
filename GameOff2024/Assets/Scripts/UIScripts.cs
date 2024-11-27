@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using Cinemachine;
 using UnityEngine.AI;
+using UnityEngine.Audio;
 
 public class UIScripts : MonoBehaviour
 {
@@ -65,10 +66,16 @@ public class UIScripts : MonoBehaviour
     public Image abilityBeepImage;
 
 
+    [Header("Sound Effects")]
+    
+    [SerializeField] AudioMixer audioMixer;
+    [SerializeField] private AudioSource elevatorOpenSound;
+
+
     void Start()
     {
-        //set settings values
         PersistantManager pm = FindObjectOfType<PersistantManager>();
+        //set settings values
         //Set slider value
         sensSlide.value = pm.sensValue;
         sensSlideSettings.value = pm.sensValue;
@@ -102,6 +109,7 @@ public class UIScripts : MonoBehaviour
                 Cursor.lockState = CursorLockMode.Locked;
                 //Coroutine to fade in before playing
                 StartCoroutine(MainMenuSkipActions());
+                pm.StartGameplayMusic();
             }
             else
             {
@@ -112,10 +120,12 @@ public class UIScripts : MonoBehaviour
         else//for all other levels
         {
             Cursor.lockState = CursorLockMode.Locked;
+            pm.StopAllMusic();
+            elevatorOpenSound.Play();
         }
     }
 
-    //Menu showing and hiding function (done like this to make adding transition animations easier) //ToDo Get rid of unneeded coroutines
+    //Menu showing and hiding function (done like this to make adding transition animations easier) //ToDo Get rid of unneeded coroutines ('yield return null's)
     //-----------------------------------------------------------------------------------------
     public void ShowLevelWinScreen()
     {
@@ -218,6 +228,11 @@ public class UIScripts : MonoBehaviour
         pauseScreen.SetActive(true);
         pauseRetry.Select();
         Time.timeScale = 0;
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        if(pm != null)
+        {
+            pm.OpenPauseMenuMusic();
+        }
     }
 
     //-----------------------------------------------------------------------------------------
@@ -234,6 +249,11 @@ public class UIScripts : MonoBehaviour
         pauseScreen.SetActive(false);
         eveSys.SetSelectedGameObject(null);
         Time.timeScale = 1;
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        if(pm != null)
+        {
+            pm.ClosePauseMenuMusic();
+        }
     }
 
     //-----------------------------------------------------------------------------------------
@@ -247,6 +267,11 @@ public class UIScripts : MonoBehaviour
         yield return null;
         mainMenuScreen.SetActive(true);
         mainStartGame.Select();
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        if(pm != null)
+        {
+            pm.StartMainMenuMusic();
+        }
     }
 
     //-----------------------------------------------------------------------------------------
@@ -265,11 +290,21 @@ public class UIScripts : MonoBehaviour
     public void TransitionToBlack()
     {
         transAnim.SetTrigger("ToBlack");
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        if(pm != null)
+        {
+            pm.FadeOutAllMusic(1);
+        }
     }
 
     public void TransitionFromBlack()
     {
         transAnim.SetTrigger("FromBlack");
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        if(pm != null)
+        {
+            pm.FadeInAllMusic(1);
+        }
     }
 
     //-----------------------------------------------------------------------------------------
@@ -339,6 +374,7 @@ public class UIScripts : MonoBehaviour
 
     IEnumerator RetryLostLevelButtonActions()
     {
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
         //Disable enemy fuctionality to avoid loss triggering mid-transition
         SetAllEnemiesEnableState(false);
         //Transition out
@@ -359,13 +395,13 @@ public class UIScripts : MonoBehaviour
             {
                 tempElevator.PlaceCarInLift();
                 tempElevator.ActivateIndoorCamera();
+                pm.StartElevatorMusic();
             }
             //Transition in
             TransitionFromBlack();
             yield return new WaitForSecondsRealtime(1f);
         }
         //in case of loading first level, set whether to show the main menu
-        PersistantManager pm = FindObjectOfType<PersistantManager>();
         pm.startWithoutMainMenu = true;
         //Reload this scene
         yield return new WaitForSecondsRealtime(1f);
@@ -421,6 +457,8 @@ public class UIScripts : MonoBehaviour
     IEnumerator MainToStartButtonActions()//Start playing main menu level
     {
         yield return null;
+        PersistantManager pm = FindObjectOfType<PersistantManager>();
+        pm.StartGameplayMusic();
         //Hide Menu
         HideMain();
         HUDIn();//turn on hud
@@ -470,6 +508,8 @@ public class UIScripts : MonoBehaviour
             {
                 tempElevator.PlaceCarInLift();
                 tempElevator.ActivateIndoorCamera();
+                PersistantManager pm = FindObjectOfType<PersistantManager>();
+                pm.StartElevatorMusic();
             }
             mainMenuVCam.enabled = false;
             //hide menu
@@ -598,6 +638,7 @@ public class UIScripts : MonoBehaviour
     public void UpdateVol()//update the game volume
     {
         int newVal = 10;
+        //make sure both sliders have correct value
         if(mainMenuScreen.activeSelf)
         {
             newVal = (int)volSlideSettings.value;
@@ -610,6 +651,15 @@ public class UIScripts : MonoBehaviour
         }
         PersistantManager pm = FindObjectOfType<PersistantManager>();
         pm.volValue = newVal;
-        //ToDo apply volume slider change
+        //apply volume slider change
+        SetMasterVolume(newVal);
+    }
+
+    private void SetMasterVolume(int value)
+    {
+        //calculate desired volume
+        float newVolume = value <= 0 ? 0.0001f : (value / 5f);
+        //apply volume slider change
+        audioMixer.SetFloat("masterVolume", Mathf.Log10(newVolume) * 20);
     }
 }

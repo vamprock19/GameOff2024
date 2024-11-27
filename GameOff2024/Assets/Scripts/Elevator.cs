@@ -14,6 +14,9 @@ public class Elevator : MonoBehaviour
     public bool isStartgameElevator = false;//is this elevator for the start or end of a level
     private float playerYDiff = 1.08f;//approx height of player above floor. (Not calculated live to avoid some bugs)
 
+    [Header("Sound Effects")]
+    [SerializeField] private AudioSource elevatorCloseSound;
+
     //ToDo ensure functionality for when camera pan not working
 
     void Start()
@@ -57,6 +60,7 @@ public class Elevator : MonoBehaviour
                 PatrolNavigation[] patrolEnemies = FindObjectsOfType<PatrolNavigation>();
                 foreach (PatrolNavigation patroller in patrolEnemies)
                 {
+                    patroller.NullifyState();
                     patroller.enabled = false;
                 }
                 //disable movement
@@ -109,6 +113,7 @@ public class Elevator : MonoBehaviour
         //Animate door close
         yield return new WaitForSeconds(0.5f);
         elevatorAnim.SetTrigger("ToggleElevatorState");
+        elevatorCloseSound.Play();
         yield return new WaitForSeconds(1f);
         //fix position and rotation
         PlaceCarInLift();
@@ -117,6 +122,8 @@ public class Elevator : MonoBehaviour
         if(personalVCamInside != null)
         {
             personalVCamInside.enabled = true;
+            PersistantManager pm = FindObjectOfType<PersistantManager>();
+            pm.StartElevatorMusic();
         }
         playerController.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
         //Win Game Here
@@ -147,6 +154,8 @@ public class Elevator : MonoBehaviour
         if(personalVCamOutside != null)
         {
             personalVCamInside.enabled = false;
+            PersistantManager pm = FindObjectOfType<PersistantManager>();
+            pm.StartGameplayMusic();
         }
         //wait until car outside
         float dist = Vector3.Distance(new Vector3(playerController.transform.position.x, 0, playerController.transform.position.z), new Vector3(outdoorLocation.transform.position.x, 0, outdoorLocation.transform.position.z));

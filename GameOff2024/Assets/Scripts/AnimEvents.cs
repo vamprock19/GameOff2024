@@ -6,10 +6,27 @@ public class AnimEvents : MonoBehaviour
 {
     [SerializeField] private GameObject[] headLights;
     private PlayerController player;
+    
+    [Header("Sound Effects")]
+    [SerializeField] private AudioSource flashSound;
+    [SerializeField] private AudioSource beepSound;
+
+    [SerializeField] private AudioSource leftStepSound;
+    [SerializeField] private AudioSource rightStepSound;
 
     void Start()
     {
         player = FindObjectOfType<PlayerController>();
+    }
+
+    public void StepLeft()
+    {
+        leftStepSound.Play();
+    }
+
+    public void StepRight()
+    {
+        rightStepSound.Play();
     }
 
     public void LightOn()
@@ -18,6 +35,7 @@ public class AnimEvents : MonoBehaviour
         foreach(GameObject g in headLights)
         {
             g.SetActive(true);
+            flashSound.Play();
         }
     }
     
@@ -37,6 +55,7 @@ public class AnimEvents : MonoBehaviour
 
     public void BeepStart()
     {
+        beepSound.Play();
         //from players position, get all colliders within radius
         Collider[] hitCols = Physics.OverlapSphere(player.transform.position, 50);
         foreach(Collider col in hitCols)

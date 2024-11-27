@@ -50,6 +50,12 @@ public class PlayerController : MonoBehaviour
     public float turnSmoothTime = 0.1f;
     private float turnSmoothVelocity;
 
+    [Header("Sound Effects")]
+    [SerializeField] private AudioSource abilitySound;
+    [SerializeField] private AudioSource abilityFailSound;
+    [SerializeField] private AudioSource jumpSound;
+    [SerializeField] private AudioSource landSound;
+
     private PlayerLocomotionInput playerLocomotionInput;
     
 
@@ -152,6 +158,10 @@ public class PlayerController : MonoBehaviour
     {
         if(characterController.isGrounded && verticalVelocity < 0)//if on the floor and moving downwards
         {
+            if(verticalVelocity < -10)//if was just falling
+            {
+                landSound.Play();
+            }
             verticalVelocity = -1;
             playerAnim.SetBool("isFalling", false);
         }
@@ -204,6 +214,7 @@ public class PlayerController : MonoBehaviour
                 verticalVelocity = jumpStrength;
                 playerAnim.SetBool("isFalling", false);
                 playerAnim.SetBool("isJumping", true);
+                jumpSound.Play();
             }
         }
     }
@@ -221,11 +232,13 @@ public class PlayerController : MonoBehaviour
                 playerAnim.SetTrigger("Flash");
                 flashCooldownTimer = flashCooldown;
                 ui.HudButtonPressPulse(ui.abilityFlashBox);//ability press animation
+                abilitySound.Play();
             }
             else//if cannot flash, but tried to
             {
                 //show failed attempt to use
                 ui.HudButtonPressFail(ui.abilityFlashBox);
+                abilityFailSound.Play();
             }
         }
     }
@@ -243,11 +256,13 @@ public class PlayerController : MonoBehaviour
                 playerAnim.SetTrigger("Beep");
                 beepCooldownTimer = beepCooldown;
                 ui.HudButtonPressPulse(ui.abilityBeepBox);//ability press animation
+                abilitySound.Play();
             }
             else//if cannot flash, but tried to
             {
                 //show failed attempt to use
                 ui.HudButtonPressFail(ui.abilityBeepBox);
+                abilityFailSound.Play();
             }
         }
     }

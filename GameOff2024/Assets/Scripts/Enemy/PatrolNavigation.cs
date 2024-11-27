@@ -59,6 +59,9 @@ public class PatrolNavigation : MonoBehaviour
     [Header("Disguise")]//success of diguise calculated using prime numbers
     public DisguiseGroups disguiseNeeded = DisguiseGroups.None;//id of disguise needed by player to avoid detection by this when still.  1 - none, 2 - red, 3 - blue, 5 - green, 7 - yellow
     
+    [Header("Sound Effects")]
+    [SerializeField] private AudioSource suspicionSound;
+    [SerializeField] private AudioSource alertSound;
 
     // Start is called before the first frame update
     void Start()
@@ -137,6 +140,16 @@ public class PatrolNavigation : MonoBehaviour
         }
     }
 
+    public void NullifyState()//Set state to null, effectively disabling this
+    {
+        CancelInvoke();
+        if(enemyAnim != null)
+        {
+            enemyAnim.SetBool("isWalking", false);
+        }
+        currentState = EnemyState.NullState;
+    }
+
     //State Functions++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     private void DoWaiting()//Waiting State----------------------------------------------------------------------------------------------------
     {
@@ -182,6 +195,7 @@ public class PatrolNavigation : MonoBehaviour
     {
         NavigationStart(searchLocation);
         suspicionMeter = Mathf.Max(20, suspicionMeter);//set suspicion when alerted
+        suspicionSound.Play();
         CheckForEndGame();
     }
 
@@ -225,6 +239,7 @@ public class PatrolNavigation : MonoBehaviour
         {
             suspicionMeter = 0;
             suspicionIcon.SetActive(false);
+            suspicionSound.Stop();
             Invoke("MoveToNextWaypoint", 0.5f);//return to patrol after 1 second
             currentState = EnemyState.NullState;
         }
@@ -235,7 +250,7 @@ public class PatrolNavigation : MonoBehaviour
         TurnTowardsPlayer();
         //if too far, move closer
         Vector3 endPos = new Vector3(player.transform.position.x, agent.transform.position.y, player.transform.position.z);
-        if(Vector3.Distance(agent.transform.position, endPos) > 15)
+        if(Vector3.Distance(agent.transform.position, endPos) > 10)
         {
             agent.SetDestination(endPos);
             enemyAnim.SetBool("isWalking", true);
@@ -258,6 +273,7 @@ public class PatrolNavigation : MonoBehaviour
         CancelInvoke();
         agent.speed = defaultSpeed;
         currentState = EnemyState.Spotting;
+        suspicionSound.Play();
     }
 
     private void TurnTowardsPlayer()
@@ -271,15 +287,16 @@ public class PatrolNavigation : MonoBehaviour
         Vector3 startPos = agent.transform.position;
         Vector3 endPos = new Vector3(player.transform.position.x, agent.transform.position.y, player.transform.position.z);
         Vector3 direVect = (endPos - startPos).normalized;
-        if(Mathf.Abs(Vector3.SignedAngle(agent.transform.forward, direVect, Vector3.up)) > 10)
+        float speedMultiplier = Vector3.Distance(startPos, endPos) < 5 ? 2 : 1;//increase turn speed if player is very close
+        if(Mathf.Abs(Vector3.SignedAngle(agent.transform.forward, direVect, Vector3.up)) > 7.5f)
         {
             if(Vector3.SignedAngle(agent.transform.forward, direVect, Vector3.up) > 0)
             {
-                agent.transform.Rotate(new Vector3(0, turnSpeed, 0));
+                agent.transform.Rotate(new Vector3(0, turnSpeed * speedMultiplier, 0));
             }
             else
             {
-                agent.transform.Rotate(new Vector3(0, -turnSpeed, 0));
+                agent.transform.Rotate(new Vector3(0, -turnSpeed * speedMultiplier, 0));
             }
         }
     }
@@ -306,6 +323,7 @@ public class PatrolNavigation : MonoBehaviour
         enemyAnim.SetBool("isWalking", false);
         enemyAnim.SetBool("isDizzy", true);
         suspicionMeter = 0;
+        suspicionSound.Stop();
         suspicionIcon.SetActive(false);
         stunIcon.SetActive(true);
         CancelInvoke();
@@ -320,6 +338,7 @@ public class PatrolNavigation : MonoBehaviour
         if(suspicionMeter >= 100)
         {
             suspicionMeter = 100;
+            suspicionSound.Stop();
             if(gameOverEnemy == null)//stop multiple enemies from running this script at the same time
             {
                 gameOverEnemy = this;
@@ -331,6 +350,7 @@ public class PatrolNavigation : MonoBehaviour
                 player.GetComponent<PlayerController>().ToggleInputOn(false);//disable input
                 FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls
                 FindObjectOfType<UIScripts>().HUDOut();//turn off hud
+                alertSound.Play();
                 //pan camera to player
                 if(personalVCam != null)
                 {
