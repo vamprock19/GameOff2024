@@ -65,6 +65,7 @@ public class UIScripts : MonoBehaviour
     public Image abilityFlashImage;
     public GameObject abilityBeepBox;
     public Image abilityBeepImage;
+    public Slider staminaBar;
 
 
     [Header("Sound Effects")]
@@ -75,28 +76,27 @@ public class UIScripts : MonoBehaviour
 
     void Start()
     {
-        PersistantManager pm = FindObjectOfType<PersistantManager>();
         //Set level times values
         for(int i = 0; i < levelTimeRecords.Count; i++)
         {
-            if(pm.levelTimes.Count > i)
+            if(PersistantManager.levelTimes.Count > i)
             {
                 //set time to show on records in correct format if it exists
-                int newVal = pm.levelTimes[i];
+                int newVal = PersistantManager.levelTimes[i];
                 levelTimeRecords[i].text = newVal == -1 ? "--:--:--" : string.Format("{0:00}:{1:00}:{2:00}", (newVal / 3600), (newVal % 3600) /60, (newVal % 60));;
             }
         }
-        if(levelTimeRecords.Count != pm.levelTimes.Count)
+        if(levelTimeRecords.Count != PersistantManager.levelTimes.Count)
         {
-            Debug.LogError("Mismatch in number of levels and assigned record displays: Please make sure all records are shown on menu: " + levelTimeRecords.Count + " displays - " + pm.levelTimes.Count + " records");
+            Debug.LogError("Mismatch in number of levels and assigned record displays: Please make sure all records are shown on menu: " + levelTimeRecords.Count + " displays - " + PersistantManager.levelTimes.Count + " records");
         }
         //Set slider value
-        sensSlide.value = pm.sensValue;
-        sensSlideSettings.value = pm.sensValue;
+        sensSlide.value = PersistantManager.sensValue;
+        sensSlideSettings.value = PersistantManager.sensValue;
         UpdateSens();
         //Set volume value
-        volSlide.value = pm.volValue;
-        volSlideSettings.value = pm.volValue;
+        volSlide.value = PersistantManager.volValue;
+        volSlideSettings.value = PersistantManager.volValue;
         UpdateVol();
         //find an elevator from this scene to use when restarting
         tempElevator = FindObjectOfType<Elevator>();
@@ -118,13 +118,17 @@ public class UIScripts : MonoBehaviour
                 FindObjectOfType<CinemachineInputProvider>().enabled = false;//disable camera controls
             }
             //if using main menu or not
-            if(pm.startWithoutMainMenu)
+            if(PersistantManager.startWithoutMainMenu)
             {
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 //Coroutine to fade in before playing
                 StartCoroutine(MainMenuSkipActions());
-                pm.StartGameplayMusic();
+                PersistantManager pm = FindObjectOfType<PersistantManager>();
+                if(pm != null)
+                {
+                    pm.StartGameplayMusic();
+                }
             }
             else
             {
@@ -136,7 +140,11 @@ public class UIScripts : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            pm.StopAllMusic();
+            PersistantManager pm = FindObjectOfType<PersistantManager>();
+            if(pm != null)
+            {
+                pm.StopAllMusic();
+            }
             elevatorOpenSound.Play();
         }
     }
@@ -157,10 +165,9 @@ public class UIScripts : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.2f);
         winTime.gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(0.2f);
-        PersistantManager pm = FindObjectOfType<PersistantManager>();
-        if((timePassed < pm.levelTimes[SceneManager.GetActiveScene().buildIndex]) || (pm.levelTimes[SceneManager.GetActiveScene().buildIndex] == -1))
+        if((timePassed < PersistantManager.levelTimes[SceneManager.GetActiveScene().buildIndex]) || (PersistantManager.levelTimes[SceneManager.GetActiveScene().buildIndex] == -1))
         {
-            pm.levelTimes[SceneManager.GetActiveScene().buildIndex] = timePassed;
+            PersistantManager.levelTimes[SceneManager.GetActiveScene().buildIndex] = timePassed;
             winRecord.gameObject.SetActive(true);
         }
         yield return new WaitForSecondsRealtime(0.2f);
@@ -379,8 +386,7 @@ public class UIScripts : MonoBehaviour
             yield return new WaitForSecondsRealtime(1f);
         }
         //in case of loading first level, set whether to show the main menu
-        PersistantManager pm = FindObjectOfType<PersistantManager>();
-        pm.startWithoutMainMenu = true;
+        PersistantManager.startWithoutMainMenu = true;
         //Reload this scene
         yield return new WaitForSecondsRealtime(1f);
         asyncOperation.allowSceneActivation = true;
@@ -399,7 +405,6 @@ public class UIScripts : MonoBehaviour
 
     IEnumerator RetryLostLevelButtonActions()
     {
-        PersistantManager pm = FindObjectOfType<PersistantManager>();
         //Disable enemy fuctionality to avoid loss triggering mid-transition
         SetAllEnemiesEnableState(false);
         //Transition out
@@ -420,14 +425,19 @@ public class UIScripts : MonoBehaviour
             {
                 tempElevator.PlaceCarInLift();
                 tempElevator.ActivateIndoorCamera();
-                pm.StartElevatorMusic();
+                PersistantManager pm = FindObjectOfType<PersistantManager>();
+                if(pm != null)
+                {
+                        pm.StartElevatorMusic();
+
+                }
             }
             //Transition in
             TransitionFromBlack();
             yield return new WaitForSecondsRealtime(1f);
         }
         //in case of loading first level, set whether to show the main menu
-        pm.startWithoutMainMenu = true;
+        PersistantManager.startWithoutMainMenu = true;
         //Reload this scene
         yield return new WaitForSecondsRealtime(1f);
         asyncOperation.allowSceneActivation = true;
@@ -454,8 +464,7 @@ public class UIScripts : MonoBehaviour
         //Ensure timescale is normal(for paused menu)
         Time.timeScale = 1;
         //set to show the main menu
-        PersistantManager pm = FindObjectOfType<PersistantManager>();
-        pm.startWithoutMainMenu = false;
+        PersistantManager.startWithoutMainMenu = false;
         //Load Main Menu screen
         yield return new WaitForSecondsRealtime(1f);
         Cursor.lockState = CursorLockMode.None;
@@ -653,8 +662,7 @@ public class UIScripts : MonoBehaviour
             newVal = (int)sensSlide.value;
             sensSlideSettings.value = newVal;
         }
-        PersistantManager pm = FindObjectOfType<PersistantManager>();
-        pm.sensValue = newVal;
+        PersistantManager.sensValue = newVal;
         if(playerController != null)
         {
             if(playerController.mainVCam != null)
@@ -679,8 +687,7 @@ public class UIScripts : MonoBehaviour
             newVal = (int)volSlide.value;
             volSlideSettings.value = newVal;
         }
-        PersistantManager pm = FindObjectOfType<PersistantManager>();
-        pm.volValue = newVal;
+        PersistantManager.volValue = newVal;
         //apply volume slider change
         SetMasterVolume(newVal);
     }

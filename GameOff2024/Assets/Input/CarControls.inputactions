@@ -11,7 +11,8 @@
                     "id": "ea66a431-c326-44bc-82b9-1410afc178ad",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Look",
@@ -19,7 +20,8 @@
                     "id": "81a1c87c-c2c8-4652-95e7-46d3202baa62",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Jump",
@@ -27,7 +29,8 @@
                     "id": "3402eb56-0aa9-4f4c-a585-228328141824",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Sprint",
@@ -35,7 +38,8 @@
                     "id": "49b2f9ca-88c8-4913-b719-ba6ab081b8c8",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Flash",
@@ -43,7 +47,8 @@
                     "id": "c61ef515-ed56-4c97-9f7a-eb81050ad2a0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Pause",
@@ -51,7 +56,8 @@
                     "id": "2a505b44-e665-441a-81f0-0125ff7c5cef",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Beep",
@@ -59,7 +65,8 @@
                     "id": "d44e6b5d-4e92-4935-919f-e3d7e9c79aba",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -329,28 +336,6 @@
                 },
                 {
                     "name": "",
-                    "id": "5d38849b-a03c-4af0-a74e-497ebc3139f6",
-                    "path": "<Keyboard>/leftShift",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f0524449-2e5c-49c8-88e7-241ece135fac",
-                    "path": "<Gamepad>/leftStickPress",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Sprint",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4e912a74-b9e3-44ee-8aeb-2d09f2497b1b",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
@@ -412,6 +397,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Beep",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "77f4d068-95a0-4fe5-a9a6-08204b73e49f",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a82bcea4-c471-4fdc-a49a-7b8753323da6",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprint",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -21,6 +21,10 @@ public class PlayerController : MonoBehaviour
     public float drag;
     public float runSpeed;
     [SerializeField] float sprintMult;
+    [SerializeField] private float staminaGainRate = 20;
+    [SerializeField] private float staminaLossRate = 60;
+    private bool staminaUsable = true;
+
 
     [Header("Vertical Movement")]
     private float gravity = -9.81f;
@@ -103,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
                 //set animation parameters
                 playerAnim.SetBool("isWalking", (playerLocomotionInput.MovementInput.magnitude > 0.1f));
-                playerAnim.SetBool("isSprinting", (playerLocomotionInput.SprintInput > 0.1f));
+                playerAnim.SetBool("isSprinting", ((playerLocomotionInput.SprintInput > 0.1f) && (staminaUsable)));
             }
             else//if automatic movement
             {        
@@ -123,6 +127,29 @@ public class PlayerController : MonoBehaviour
                     playerAnim.SetBool("isFalling", true);
                     playerAnim.SetBool("isJumping", false);
                 }
+            }
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        //stamina system
+        if(((playerLocomotionInput.SprintInput > 0.1f) && (staminaUsable)))//if sprinting
+        {
+            //deplete stamina if being used, and force it to cooldown if fully depleted
+            ui.staminaBar.value = Mathf.Max(ui.staminaBar.value - (staminaLossRate * Time.fixedDeltaTime), 0);
+            if(ui.staminaBar.value <= 0)
+            {
+                staminaUsable = false;
+            }
+        }
+        else
+        {
+            //deplete stamina if being used, and force it to cooldown if fully depleted
+            ui.staminaBar.value = Mathf.Min(ui.staminaBar.value + (staminaGainRate * Time.fixedDeltaTime), 100);
+            if(ui.staminaBar.value >= 100)
+            {
+                staminaUsable = true;
             }
         }
     }
@@ -186,14 +213,14 @@ public class PlayerController : MonoBehaviour
         Vector3 cameraRightXZ = new Vector3(playerCamera.transform.right.x, 0, playerCamera.transform.right.z).normalized;
         Vector3 moveDirection = cameraRightXZ * playerLocomotionInput.MovementInput.x + cameraForwardXZ * playerLocomotionInput.MovementInput.y;
 
-        Vector3 moveDelta = moveDirection * runAcceleration * Time.deltaTime * ((playerLocomotionInput.SprintInput > 0.1f) ? sprintMult : 1);//if sprinting, multiply acceleration
+        Vector3 moveDelta = moveDirection * runAcceleration * Time.deltaTime * (((playerLocomotionInput.SprintInput > 0.1f) && (staminaUsable)) ? sprintMult : 1);//if sprinting, multiply acceleration
         Vector3 newVel = characterController.velocity + moveDelta;
         newVel.y = 0;//no vertical speed limit
 
         //apply drag
         Vector3 curDrag = newVel.normalized * drag * Time.deltaTime;
         newVel = (newVel.magnitude > drag * Time.deltaTime) ? newVel - curDrag : Vector3.zero;
-        newVel = (playerLocomotionInput.SprintInput > 0.1f) ? Vector3.ClampMagnitude(newVel, runSpeed * sprintMult) : Vector3.ClampMagnitude(newVel, runSpeed);//if sprinting, multiply speed when clamping
+        newVel = ((playerLocomotionInput.SprintInput > 0.1f) && (staminaUsable)) ? Vector3.ClampMagnitude(newVel, runSpeed * sprintMult) : Vector3.ClampMagnitude(newVel, runSpeed);//if sprinting, multiply speed when clamping
 
         //apply movement
         movementToApply += newVel;

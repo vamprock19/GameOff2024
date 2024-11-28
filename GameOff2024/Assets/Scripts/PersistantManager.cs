@@ -7,11 +7,11 @@ using UnityEngine.SceneManagement;
 public class PersistantManager : MonoBehaviour
 {
     public static PersistantManager Instance;
-    public bool startWithoutMainMenu = false;//if when loading the main menu, the menu should be shown or skipped
+    public static bool startWithoutMainMenu = false;//if when loading the main menu, the menu should be shown or skipped
     
-    public List<int> levelTimes = new List<int>();//record times for (potential) levels
-    public int sensValue = 5;
-    public int volValue = 5;
+    public static List<int> levelTimes = new List<int>();//record times for (potential) levels
+    public static int sensValue = 5;
+    public static int volValue = 5;
 
     [Header("Music")]
     [SerializeField] private AudioSource mainMenuMusic;
@@ -29,6 +29,12 @@ public class PersistantManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        //set starting values
+        startWithoutMainMenu = false;
+        levelTimes = new List<int>();
+        sensValue = 5;
+        volValue = 5;
 
         //create empty list of player times
         Debug.Log("Scene Count: " + SceneManager.sceneCountInBuildSettings);//ToDo Remove
