@@ -10624,6 +10624,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 421330309}
     m_Modifications:
+    - target: {fileID: 218542917660104889, guid: f6f5d3b057a51b441864cccde1b2e4ce, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 352855848544885957, guid: f6f5d3b057a51b441864cccde1b2e4ce, type: 3}
       propertyPath: m_Name
       value: Elevator Start
@@ -11317,7 +11321,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2001981632}
-  m_LocalRotation: {x: 0.22003525, y: -0, z: -0, w: 0.97549194}
+  m_LocalRotation: {x: 0.22003539, y: -0, z: -0, w: 0.9754919}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -11606,6 +11610,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5784137041151292964, guid: 68bd49bc098f9e847a42285196b70264, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5784137041151292964, guid: 68bd49bc098f9e847a42285196b70264, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7244090542963503105, guid: 68bd49bc098f9e847a42285196b70264, type: 3}
       propertyPath: m_Name
       value: Canvas
