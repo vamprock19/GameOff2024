@@ -2,19 +2,7 @@ fileFormatVersion: 2
 guid: 7cdf8b8805e8c214b9772469b632a4fe
 ModelImporter:
   serializedVersion: 21300
-  internalIDToNameTable:
-  - first:
-      74: -1645610703992155531
-    second: metarig|Dizzy.Man
-  - first:
-      74: 2686791302063911708
-    second: metarig|Idle.Man
-  - first:
-      74: 5211470006677928295
-    second: metarig|Torch.Man
-  - first:
-      74: 1895408771582838291
-    second: metarig|Walk.Man
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -26,7 +14,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    removeConstantScaleCurves: 0
+    removeConstantScaleCurves: 1
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -47,7 +35,7 @@ ModelImporter:
     - serializedVersion: 16
       name: metarig|Dizzy.Man
       takeName: metarig|Dizzy.Man
-      internalID: 0
+      internalID: -1645610703992155531
       firstFrame: 0
       lastFrame: 48
       wrapMode: 0
@@ -76,7 +64,7 @@ ModelImporter:
     - serializedVersion: 16
       name: metarig|Idle.Man
       takeName: metarig|Idle.Man
-      internalID: 0
+      internalID: 2686791302063911708
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -105,7 +93,7 @@ ModelImporter:
     - serializedVersion: 16
       name: metarig|Torch.Man
       takeName: metarig|Torch.Man
-      internalID: 0
+      internalID: 5211470006677928295
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -134,7 +122,7 @@ ModelImporter:
     - serializedVersion: 16
       name: metarig|Walk.Man
       takeName: metarig|Walk.Man
-      internalID: 0
+      internalID: 1895408771582838291
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -156,14 +144,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.08888889
+      - time: 0.082976185
         functionName: StepRight
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 4359fbe382060cd42b0a257314333e96, type: 3}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5733333
+      - time: 0.58373016
         functionName: StepLeft
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 4359fbe382060cd42b0a257314333e96, type: 3}
@@ -186,7 +174,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    nodeNameCollisionStrategy: 0
+    nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -242,7 +230,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  remapMaterialsIfMaterialImportModeIsNone: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
