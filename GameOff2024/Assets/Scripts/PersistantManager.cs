@@ -35,6 +35,10 @@ public class PersistantManager : MonoBehaviour
         levelTimes = new List<int>();
         sensValue = 5;
         volValue = 5;
+        mainMenuMusic.volume = 0;
+        gameplayMusic.volume = 0;
+        pauseMenuMusic.volume = 0;
+        elevatorMusic.volume = 0;
 
         //create empty list of player times
         Debug.Log("Scene Count: " + SceneManager.sceneCountInBuildSettings);//ToDo Remove

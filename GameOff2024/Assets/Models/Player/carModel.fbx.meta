@@ -2,28 +2,7 @@ fileFormatVersion: 2
 guid: fc892d779431f7e4fa921965e4f702bc
 ModelImporter:
   serializedVersion: 21300
-  internalIDToNameTable:
-  - first:
-      74: -9096683586079840714
-    second: Armature|Bash
-  - first:
-      74: -5025487861805838091
-    second: Armature|Fall
-  - first:
-      74: -8945691123924629249
-    second: Armature|Idle
-  - first:
-      74: 1079665108409675491
-    second: Armature|Jump
-  - first:
-      74: -8253587923578786629
-    second: Armature|StartWalk
-  - first:
-      74: 7135741352222054168
-    second: Armature|StopWalk
-  - first:
-      74: 8349542763059015795
-    second: Armature|Walk
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,7 +14,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    removeConstantScaleCurves: 0
+    removeConstantScaleCurves: 1
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -56,7 +35,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Bash
       takeName: Armature|Bash
-      internalID: 0
+      internalID: -9096683586079840714
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -85,18 +64,11 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.33109224
+      - time: 0.3288889
         functionName: LightOn
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 0f6c4fe2ff3a2ca4b900bc195801a85b, type: 3}
         floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.9868421
-        functionName: AbilityEnd
-        data: 
-        objectReferenceParameter: {fileID: 11500000, guid: 0f6c4fe2ff3a2ca4b900bc195801a85b, type: 3}
-        floatParameter: 0.25
         intParameter: 0
         messageOptions: 0
       - time: 1
@@ -106,6 +78,42 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.9822222
+        functionName: AbilityEnd
+        data: 
+        objectReferenceParameter: {fileID: 11500000, guid: 0f6c4fe2ff3a2ca4b900bc195801a85b, type: 3}
+        floatParameter: 0.25
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|DefaultFace
+      takeName: Armature|DefaultFace
+      internalID: 1061884355506852890
+      firstFrame: 0
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -113,7 +121,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Fall
       takeName: Armature|Fall
-      internalID: 0
+      internalID: -5025487861805838091
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -149,7 +157,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Idle
       takeName: Armature|Idle
-      internalID: 0
+      internalID: -8945691123924629249
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -185,9 +193,9 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Jump
       takeName: Armature|Jump
-      internalID: 0
+      internalID: 1079665108409675491
       firstFrame: 0
-      lastFrame: 8
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -219,9 +227,96 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+      name: Armature|Sad
+      takeName: Armature|Sad
+      internalID: -7235932175846496021
+      firstFrame: 0
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Smile
+      takeName: Armature|Smile
+      internalID: 8747391657610118053
+      firstFrame: 0
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: Armature|Snoring
+      takeName: Armature|Snoring
+      internalID: 8582613565289096385
+      firstFrame: 0
+      lastFrame: 25
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
       name: Armature|StartWalk
       takeName: Armature|StartWalk
-      internalID: 0
+      internalID: -8253587923578786629
       firstFrame: 0
       lastFrame: 8
       wrapMode: 0
@@ -243,7 +338,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.4981413
+      - time: 0.5
         functionName: SetTryingToHide
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 0f6c4fe2ff3a2ca4b900bc195801a85b, type: 3}
@@ -257,7 +352,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|StopWalk
       takeName: Armature|StopWalk
-      internalID: 0
+      internalID: 7135741352222054168
       firstFrame: 0
       lastFrame: 9
       wrapMode: 0
@@ -293,7 +388,7 @@ ModelImporter:
     - serializedVersion: 16
       name: Armature|Walk
       takeName: Armature|Walk
-      internalID: 0
+      internalID: 8349542763059015795
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -315,7 +410,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.50222224
+      - time: 0.5
         functionName: StepLeft
         data: 
         objectReferenceParameter: {fileID: 11500000, guid: 0f6c4fe2ff3a2ca4b900bc195801a85b, type: 3}
@@ -345,7 +440,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    nodeNameCollisionStrategy: 0
+    nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -401,7 +496,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  remapMaterialsIfMaterialImportModeIsNone: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
   additionalBone: 0
   userData: 
   assetBundleName: 
