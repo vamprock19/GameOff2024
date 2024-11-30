@@ -347,7 +347,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 959405721253826178}
   m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 0, y: 0.05, z: 0}
+  m_LocalPosition: {x: 0, y: 0.06, z: 0}
   m_LocalScale: {x: 0.49999994, y: 0.5, z: 0.50000006}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -376,7 +376,7 @@ MonoBehaviour:
   m_ScaleMode: 0
   m_Offset: {x: 0, y: 0, z: 1}
   m_Size: {x: 1.5, y: 1.5, z: 2}
-  m_FadeFactor: 0.05
+  m_FadeFactor: 0.15
 --- !u!1 &959405721723820848
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,7 +540,7 @@ MonoBehaviour:
   agent: {fileID: 959405721723820861}
   enemyAnim: {fileID: 959405722920736884}
   suspicionMeter: 0
-  suspicionRate: 20
+  suspicionRate: 40
   suspicionIcon: {fileID: 7315815707156502920}
   suspicionIconRenderer: {fileID: 783235661812653127}
   suspicionMask: {fileID: 8585431283005162714}

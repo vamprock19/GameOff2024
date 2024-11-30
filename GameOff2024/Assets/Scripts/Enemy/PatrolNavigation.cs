@@ -293,7 +293,7 @@ public class PatrolNavigation : MonoBehaviour
         Vector3 startPos = agent.transform.position;
         Vector3 endPos = new Vector3(player.transform.position.x, agent.transform.position.y, player.transform.position.z);
         Vector3 direVect = (endPos - startPos).normalized;
-        float speedMultiplier = Vector3.Distance(startPos, endPos) < 5 ? 2 : 1;//increase turn speed if player is very close
+        float speedMultiplier = Vector3.Distance(startPos, endPos) < 5 ? 4 : 2;//increase turn speed if player is very close
         if(Mathf.Abs(Vector3.SignedAngle(agent.transform.forward, direVect, Vector3.up)) > 7.5f)
         {
             if(Vector3.SignedAngle(agent.transform.forward, direVect, Vector3.up) > 0)
