@@ -385,8 +385,12 @@ PrefabInstance:
       value: decorCar1
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: f931a7cff977868408ac9f5546e4b544, type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f931a7cff977868408ac9f5546e4b544, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 16
+      value: 24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f931a7cff977868408ac9f5546e4b544, type: 3}

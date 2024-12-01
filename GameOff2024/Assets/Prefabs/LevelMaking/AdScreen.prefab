@@ -91,6 +91,10 @@ PrefabInstance:
       propertyPath: m_LightProbeUsage
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: b50134373b0fe7643ae159c6cef4b20b, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: f1b371c633f0f614480f10c5d9952e4c, type: 2}
     - target: {fileID: 919132149155446097, guid: b50134373b0fe7643ae159c6cef4b20b, type: 3}
       propertyPath: m_Name
       value: decor_AdScreen
@@ -124,3 +128,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 5, z: 4}
   m_Center: {x: 0, y: 2.5, z: 0}
+--- !u!114 &6626833930457176704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054002078559011043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 864cd08b9c51e1341ba4252674c0c39e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  adPoster: {fileID: 0}
