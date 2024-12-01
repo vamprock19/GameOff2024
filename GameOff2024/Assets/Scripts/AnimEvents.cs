@@ -35,8 +35,8 @@ public class AnimEvents : MonoBehaviour
         foreach(GameObject g in headLights)
         {
             g.SetActive(true);
-            flashSound.Play();
         }
+        flashSound.Play();
     }
     
     public void LightOff()
