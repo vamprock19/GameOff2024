@@ -2917,7 +2917,7 @@ GameObject:
   - component: {fileID: 5817965702619436318}
   - component: {fileID: 883913487386812518}
   m_Layer: 5
-  m_Name: Record 2
+  m_Name: Record 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7472,6 +7472,7 @@ MonoBehaviour:
   levelTimeRecords:
   - {fileID: 744299129138726219}
   - {fileID: 40383568399690947}
+  - {fileID: 883913487386812518}
   transitionScreen: {fileID: 7244090543462436978}
   transAnim: {fileID: 7244090543462436977}
   hudAnim: {fileID: 7244090542210521353}
