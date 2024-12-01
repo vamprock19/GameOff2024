@@ -121,7 +121,7 @@ public class UIScripts : MonoBehaviour
             if(PersistantManager.startWithoutMainMenu)
             {
                 Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                //Cursor.visible = false;
                 //Coroutine to fade in before playing
                 StartCoroutine(MainMenuSkipActions());
                 PersistantManager pm = FindObjectOfType<PersistantManager>();
@@ -139,7 +139,7 @@ public class UIScripts : MonoBehaviour
         else//for all other levels
         {
             Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            //Cursor.visible = false;
             PersistantManager pm = FindObjectOfType<PersistantManager>();
             if(pm != null)
             {
@@ -149,7 +149,7 @@ public class UIScripts : MonoBehaviour
         }
     }
 
-    //Menu showing and hiding function (done like this to make adding transition animations easier) //ToDo Get rid of unneeded coroutines ('yield return null's)
+    //Menu showing and hiding function (done like this to make adding transition animations easier)
     //-----------------------------------------------------------------------------------------
     public void ShowLevelWinScreen()
     {
@@ -174,7 +174,7 @@ public class UIScripts : MonoBehaviour
         winNextLevel.gameObject.SetActive(true);
         winNextLevel.Select();
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        //Cursor.visible = true;
         yield return new WaitForSecondsRealtime(0.2f);
         winRetry.gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(0.2f);
@@ -191,7 +191,7 @@ public class UIScripts : MonoBehaviour
     {
         yield return null;
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         levelWinScreen.SetActive(false);
         eveSys.SetSelectedGameObject(null);
     }
@@ -208,7 +208,7 @@ public class UIScripts : MonoBehaviour
         levelLoseScreen.SetActive(true);
         //yield return new WaitForSecondsRealtime(0.5f);
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        //Cursor.visible = true;
         loseRetry.gameObject.SetActive(true);
         loseRetry.Select();
         loseHome.gameObject.SetActive(true);
@@ -217,14 +217,8 @@ public class UIScripts : MonoBehaviour
     //-----------------------------------------------------------------------------------------
     public void HideLevelLoseScreen()
     {
-        StartCoroutine(HandleHideLevelLose());
-    }
-
-    IEnumerator HandleHideLevelLose()
-    {
-        yield return null;
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         levelLoseScreen.SetActive(false);
         eveSys.SetSelectedGameObject(null);
     }
@@ -244,15 +238,9 @@ public class UIScripts : MonoBehaviour
 
     public void ShowPause()
     {
-        StartCoroutine(HandleShowPause());
-    }
-
-    IEnumerator HandleShowPause()
-    {
-        yield return null;
         isPaused = true;
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        //Cursor.visible = true;
         pauseScreen.SetActive(true);
         pauseRetry.Select();
         Time.timeScale = 0;
@@ -266,15 +254,9 @@ public class UIScripts : MonoBehaviour
     //-----------------------------------------------------------------------------------------
     public void HidePause()
     {
-        StartCoroutine(HandleHidePause());
-    }
-
-    IEnumerator HandleHidePause()
-    {
-        yield return null;
         isPaused = false;
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         pauseScreen.SetActive(false);
         eveSys.SetSelectedGameObject(null);
         Time.timeScale = 1;
@@ -288,14 +270,9 @@ public class UIScripts : MonoBehaviour
     //-----------------------------------------------------------------------------------------
     public void ShowMain()
     {
-        StartCoroutine(HandleShowMain());
-    }
-
-    IEnumerator HandleShowMain()
-    {
-        yield return null;
         mainMenuScreen.SetActive(true);
         mainStartGame.Select();
+        //playerController.AnimSleep(true);
         PersistantManager pm = FindObjectOfType<PersistantManager>();
         if(pm != null)
         {
@@ -306,12 +283,6 @@ public class UIScripts : MonoBehaviour
     //-----------------------------------------------------------------------------------------
     public void HideMain()
     {
-        StartCoroutine(HandleHideMain());
-    }
-
-    IEnumerator HandleHideMain()
-    {
-        yield return null;
         mainMenuScreen.SetActive(false);
     }
 
@@ -352,7 +323,7 @@ public class UIScripts : MonoBehaviour
     {
         eveSys.enabled = false;//disable inputs
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         StartCoroutine(NextLevelButtonActions());
         StartCoroutine(LoadScene(SceneManager.GetActiveScene().buildIndex + 1));//level to load
     }
@@ -371,7 +342,7 @@ public class UIScripts : MonoBehaviour
     {
         eveSys.enabled = false;//disable inputs
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         StartCoroutine(RetryWonLevelButtonActions());
         StartCoroutine(LoadScene(gameObject.scene.name));
     }
@@ -398,7 +369,7 @@ public class UIScripts : MonoBehaviour
     {
         eveSys.enabled = false;//disable inputs
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         StartCoroutine(RetryLostLevelButtonActions());
         StartCoroutine(LoadScene(gameObject.scene.name));
     }
@@ -449,7 +420,7 @@ public class UIScripts : MonoBehaviour
     {
         eveSys.enabled = false;//disable inputs
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         StartCoroutine(ToMenuButtonActions());
         StartCoroutine(LoadScene(0));//level to load
     }
@@ -468,7 +439,7 @@ public class UIScripts : MonoBehaviour
         //Load Main Menu screen
         yield return new WaitForSecondsRealtime(1f);
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        //Cursor.visible = true;
         asyncOperation.allowSceneActivation = true;
         yield return new WaitForSecondsRealtime(1f);
         missedTheBusLevelLoading = true;
@@ -487,7 +458,7 @@ public class UIScripts : MonoBehaviour
     {
         eveSys.enabled = false;//disable inputs
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         StartCoroutine(MainToStartButtonActions());
     }
 
@@ -499,6 +470,9 @@ public class UIScripts : MonoBehaviour
         //Hide Menu
         HideMain();
         HUDIn();//turn on hud
+        //Wake Up
+        //playerController.AnimSleep(false);
+        yield return new WaitForSecondsRealtime(0.025f);
         //handle cameras
         if(mainMenuVCam != null)
         {
@@ -520,7 +494,7 @@ public class UIScripts : MonoBehaviour
     {
         eveSys.enabled = false;//disable inputs
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        //Cursor.visible = false;
         StartCoroutine(MainToLevelButtonActions(levelIndex));
     }
 
@@ -558,7 +532,7 @@ public class UIScripts : MonoBehaviour
             //Load level
             yield return new WaitForSecondsRealtime(1f);
             Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
+            //Cursor.visible = true;
             asyncOperation.allowSceneActivation = true;
             yield return new WaitForSecondsRealtime(1f);
             missedTheBusLevelLoading = true;

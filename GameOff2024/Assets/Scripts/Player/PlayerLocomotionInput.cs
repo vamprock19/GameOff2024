@@ -28,7 +28,6 @@ public class PlayerLocomotionInput : MonoBehaviour, CarControls.IPlayerLocomotio
     private void OnDisable()
     {
         CarControls.PlayerLocomotionMap.Disable();
-        //CarControls.PlayerLocomotionMap.RemoveCallbacks(this);    TODO look into this?
     }
 
     private void LateUpdate()

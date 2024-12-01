@@ -33,19 +33,6 @@ public class EnemyConeDetection : MonoBehaviour
                 }
             }
         }
-        //ToDo consider editing cone length?
-        /*
-        RaycastHit hit2;
-        if(Physics.Raycast(patrolNavigation.transform.position, -transform.forward, out hit2, 40))
-        {
-            Debug.DrawLine(patrolNavigation.transform.position, hit2.point, Color.yellow, 0.1f);
-            transform.localScale = (Vector3.Distance(patrolNavigation.transform.position, hit2.point) + 0.02f) * Vector3.one * 50;
-        }
-        else
-        {
-            transform.localScale = Vector3.one * 2000;
-        }
-        */
     }
 
     void OnTriggerEnter(Collider col)//if player spotted, enter spotting mode
@@ -93,7 +80,6 @@ public class EnemyConeDetection : MonoBehaviour
         }
     }
 
-    //ToDo Pick Version, remove this function based on how enemy vision should work
     void OnTriggerExit(Collider col)//if player no longer spotted, enter investigating mode
     {
         if(isLookingAtPlayer)

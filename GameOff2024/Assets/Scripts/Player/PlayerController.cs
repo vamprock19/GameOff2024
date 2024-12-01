@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Scripting;
 
 [DefaultExecutionOrder(-1)]
@@ -69,6 +70,9 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        //ToDo Efficiency tests
+        //
+        //
         playerLocomotionInput = GetComponent<PlayerLocomotionInput>();
         ui = FindObjectOfType<UIScripts>();
         //avoid divide by 0
@@ -246,7 +250,7 @@ public class PlayerController : MonoBehaviour
             if(coyoteTime <= coyoteThreshold)//if on ground or in coyote time
             {
                 coyoteTime = 10;
-                verticalVelocity = jumpStrength;
+                verticalVelocity = jumpStrength * 0.8f;
                 playerAnim.SetBool("isFalling", false);
                 playerAnim.SetBool("isJumping", true);
                 jumpSound.Play();
@@ -315,6 +319,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void AnimSleep(bool toSleep)
+    {
+        playerAnim.SetBool("isAsleep", toSleep);
+    }
+
     //Auto movement -----------------------------------------------------------------------------------------------------------
     private void HandleAutoMovement()
     {
@@ -335,7 +344,7 @@ public class PlayerController : MonoBehaviour
 
             //apply movement
             movementToApply += newVel;
-            movementToApply.y += verticalVelocity;//and gravity and jump
+            movementToApply.y = verticalVelocity;//and gravity and jump
             //move player
             characterController.Move(movementToApply * Time.deltaTime);
 

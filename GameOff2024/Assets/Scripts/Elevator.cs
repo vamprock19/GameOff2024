@@ -17,7 +17,6 @@ public class Elevator : MonoBehaviour
     [Header("Sound Effects")]
     [SerializeField] private AudioSource elevatorCloseSound;
 
-    //ToDo ensure functionality for when camera pan not working
 
     void Start()
     {
@@ -199,7 +198,7 @@ public class Elevator : MonoBehaviour
     //--------------------------------------------------------------------------------------------------------------------------------------
     public void PlaceCarInLift()
     {
-        if(playerController != null)//ToDO consider other case
+        if(playerController != null)
         {
             //playerController.transform.position = new Vector3(transform.position.x, playerController.transform.position.y, transform.position.z);
             playerController.transform.position = new Vector3(transform.position.x, playerYDiff + transform.position.y, transform.position.z);

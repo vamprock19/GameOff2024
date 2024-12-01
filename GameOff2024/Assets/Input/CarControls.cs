@@ -328,7 +328,7 @@ public partial class @CarControls: IInputActionCollection2, IDisposable
                     ""id"": ""ba74231d-ff54-4c05-9a38-78685d58a0ee"",
                     ""path"": ""<Gamepad>/rightStick"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=4,y=4)"",
+                    ""processors"": ""ScaleVector2(x=16,y=16)"",
                     ""groups"": """",
                     ""action"": ""Look"",
                     ""isComposite"": false,

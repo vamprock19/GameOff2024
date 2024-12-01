@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6221741841055335340}
   - component: {fileID: 6407548916539269757}
-  - component: {fileID: 2959621888454322630}
   m_Layer: 0
   m_Name: Planter
   m_TagString: Untagged
@@ -47,22 +46,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3, y: 3, z: 6}
   m_Center: {x: 1.5, y: 1.5, z: -3}
---- !u!208 &2959621888454322630
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6221741841055335335}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 1.5000001, y: 1.5000001, z: 3.0000002}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 1.5000001, y: 1.5000001, z: -3.0000002}
-  m_TimeToStationary: 0.5
 --- !u!1001 &2481871179375110730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -117,6 +100,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: c4b4cf263ad157e4d85cab4f94b4224e, type: 3}
       propertyPath: m_Name
       value: decor_Planter
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c4b4cf263ad157e4d85cab4f94b4224e, type: 3}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: c4b4cf263ad157e4d85cab4f94b4224e, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4b4cf263ad157e4d85cab4f94b4224e, type: 3}
