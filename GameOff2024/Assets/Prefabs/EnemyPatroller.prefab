@@ -375,7 +375,7 @@ MonoBehaviour:
   m_UVBias: {x: 0.5, y: 0.5}
   m_ScaleMode: 0
   m_Offset: {x: 0, y: 0, z: 1}
-  m_Size: {x: 1.5, y: 1.5, z: 2}
+  m_Size: {x: 2, y: 2, z: 2}
   m_FadeFactor: 0.15
 --- !u!1 &959405721723820848
 GameObject:
@@ -1902,10 +1902,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7cdf8b8805e8c214b9772469b632a4fe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 7cdf8b8805e8c214b9772469b632a4fe, type: 3}
-      propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7cdf8b8805e8c214b9772469b632a4fe, type: 3}

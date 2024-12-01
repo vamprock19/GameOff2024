@@ -228,7 +228,7 @@ public class PlayerController : MonoBehaviour
 
         //apply movement
         movementToApply += newVel;
-        movementToApply.y += verticalVelocity;//and gravity and jump
+        movementToApply.y += verticalVelocity;//and gravity and jump //todo?
         //move player
         characterController.Move(movementToApply * Time.deltaTime);
     }
@@ -239,6 +239,8 @@ public class PlayerController : MonoBehaviour
         if(characterController.isGrounded)
         {
             coyoteTime = 0;
+            playerAnim.SetBool("isJumping", false);
+            playerAnim.SetBool("isFalling", false);
         }
         else
         {
