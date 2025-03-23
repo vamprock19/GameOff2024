@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Translation table_es
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: es
+  m_SharedData: {fileID: 11400000, guid: 574d447990a682742b21d40228e66683, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 56276276858880
+    m_Localized: Niveles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57579807821824
+    m_Localized: Ajustes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 60085132709888
+    m_Localized: Presiona WASD para moverte por el mapa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 54286499041280
+    m_Localized: Jugar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 79291924467712
+    m_Localized: Mueve el raton para ver a tu alrededor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 82393213816832
+    m_Localized: Preciona SHIFT para correr
+    m_Metadata:
+      m_Items: []
+  - m_Id: 83694500827136
+    m_Localized: Cubrete para evitar ser detectado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 85400643031040
+    m_Localized: "Los enemigos te notar\xE1n si ven que te mueves\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 86954049654784
+    m_Localized: 'Click secundario para aturdir a los enemigos
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 89003420143616
+    m_Localized: 'Preciona la BARRA SPARCIADORA  para saltar
+
+'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 90747445301248
+    m_Localized: "Haz CLICK SECUNDARIO para tocar el claxon y atraer a los enemigos
+      a tu posici\xF3n\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92776448249856
+    m_Localized: Entra al elevador para completar el nivel
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
