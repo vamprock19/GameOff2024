@@ -53,7 +53,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86954049654784
-    m_Localized: "Clique gauche pour \xE9tourdir les ennemis."
+    m_Localized: "Clique droite pour \xE9tourdir les ennemis."
     m_Metadata:
       m_Items: []
   - m_Id: 89003420143616
@@ -61,12 +61,44 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 90747445301248
-    m_Localized: "Clique droit pour klaxonner les ennemis et les attirer pr\xE8s
+    m_Localized: "Clique gauche pour klaxonner les ennemis et les attirer pr\xE8s
       de toi\n"
     m_Metadata:
       m_Items: []
   - m_Id: 92776448249856
     m_Localized: "Entre dans l'ascenseur\r \npour compl\xE9ter le niveau\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261258372567040
+    m_Localized: "Niveau r\xE9ussi"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261930484617216
+    m_Localized: "Nouveau record\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262316868096000
+    m_Localized: Niveau suivant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262750504603648
+    m_Localized: "R\xE9essayer\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 263139031371776
+    m_Localized: Menu Principal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 263941665968128
+    m_Localized: "Rep\xE9r\xE9\r"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 266830551568384
+    m_Localized: "Sensibilit\xE9 de la cam\xE9ra"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 267458145275904
+    m_Localized: "Volume\r"
     m_Metadata:
       m_Items: []
   references:

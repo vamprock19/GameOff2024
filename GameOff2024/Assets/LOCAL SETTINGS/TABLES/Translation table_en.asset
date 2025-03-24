@@ -53,7 +53,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86954049654784
-    m_Localized: Left click to stun enemies
+    m_Localized: Right click to stun enemies
     m_Metadata:
       m_Items: []
   - m_Id: 89003420143616
@@ -68,6 +68,38 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 92776448249856
     m_Localized: Enter the elevator to complete the level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261258372567040
+    m_Localized: Level passed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261930484617216
+    m_Localized: New record
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262316868096000
+    m_Localized: Next level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262750504603648
+    m_Localized: Retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 263139031371776
+    m_Localized: Main Menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 263941665968128
+    m_Localized: Busted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 266830551568384
+    m_Localized: Camera Sensivity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 267458145275904
+    m_Localized: Volume
     m_Metadata:
       m_Items: []
   references:

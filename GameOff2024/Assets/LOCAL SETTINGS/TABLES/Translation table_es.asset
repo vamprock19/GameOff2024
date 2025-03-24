@@ -51,7 +51,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 86954049654784
-    m_Localized: 'Click secundario para aturdir a los enemigos
+    m_Localized: 'Click Primario para aturdir a los enemigos
 
 '
     m_Metadata:
@@ -63,12 +63,44 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 90747445301248
-    m_Localized: "Haz CLICK SECUNDARIO para tocar el claxon y atraer a los enemigos
+    m_Localized: "Haz CLICK PRIMARIO para tocar el claxon y atraer a los enemigos
       a tu posici\xF3n\r\n"
     m_Metadata:
       m_Items: []
   - m_Id: 92776448249856
     m_Localized: Entra al elevador para completar el nivel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261258372567040
+    m_Localized: Nivel completado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 261930484617216
+    m_Localized: Nuevo record
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262316868096000
+    m_Localized: Siguiente nivel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 262750504603648
+    m_Localized: Intentar de nuevo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 263139031371776
+    m_Localized: Menu Principal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 263941665968128
+    m_Localized: Atrapado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 266830551568384
+    m_Localized: Sensibilidad de la camara de rotacion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 267458145275904
+    m_Localized: Volumen
     m_Metadata:
       m_Items: []
   references:
