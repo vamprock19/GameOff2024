@@ -47,7 +47,14 @@ public class PatrolNavigation : MonoBehaviour
     [Header("Patrol Route")]
     [SerializeField] private Transform[] patrolPath;
     [SerializeField] private int patrolPointer = 0;
-    private float defaultSpeed;
+
+    ///-------------------------------------------------------------------------------------------------------
+    private float[] defaultSpeed; // SPEED ARRAY
+    ///-------------------------------------------------------------------------------------------------------
+    ///
+
+
+
 
     [Header("Stun")]
     [SerializeField] private EnemyConeDetection torchLight;
@@ -70,10 +77,15 @@ public class PatrolNavigation : MonoBehaviour
     {
         playerCamera = Camera.main;
         player = FindObjectOfType<PlayerController>().gameObject;
-        defaultSpeed = agent.speed;
+        ///-------------------------------------------------------------------------------------------------------
+        defaultSpeed = new float[3]; // array
+        defaultSpeed[0] = 10f;
+        defaultSpeed[1] = 7.0f;
+        defaultSpeed[2] = 4.0f;
+        ///-------------------------------------------------------------------------------------------------------
 
         //de-parent all "PatrolWaypoint" children (parented for organisation of patrols)
-        if(agent.transform.Find("PatrolWaypointGroup") != null)
+        if (agent.transform.Find("PatrolWaypointGroup") != null)
         {
             agent.transform.Find("PatrolWaypointGroup").parent = null;
         }
@@ -157,7 +169,9 @@ public class PatrolNavigation : MonoBehaviour
     {
         agent.ResetPath();
         CancelInvoke();
-        agent.speed = defaultSpeed;
+        ///-------------------------------------------------------------------------------------------------------
+        agent.speed = defaultSpeed[0];
+        ///-------------------------------------------------------------------------------------------------------
         Invoke("MoveToNextWaypoint", 0.5f);//return to patrol
         enemyAnim.SetBool("isWalking", false);
         currentState = EnemyState.NullState;
@@ -168,6 +182,11 @@ public class PatrolNavigation : MonoBehaviour
         torchLight.gameObject.SetActive(true);
         currentState = EnemyState.Patrolling;
         agent.SetDestination(patrolPath[patrolPointer].position);//go to next place
+
+        ///-------------------------------------------------------------------------------------------------------
+        agent.speed = defaultSpeed[0];
+        ///-------------------------------------------------------------------------------------------------------
+
         enemyAnim.SetBool("isWalking", true);
         enemyAnim.SetBool("isDizzy", false);
         patrolPointer = (patrolPointer + 1) % patrolPath.Length;
@@ -205,7 +224,11 @@ public class PatrolNavigation : MonoBehaviour
     public void NavigationStart(Vector3 searchLocation)//Tell enemy where to go to
     {
         CancelInvoke();
-        agent.speed = defaultSpeed;
+
+        ///-------------------------------------------------------------------------------------------------------
+        agent.speed = defaultSpeed[1]; // for navigation
+
+        ///-------------------------------------------------------------------------------------------------------
         currentState = EnemyState.Navigating;
         agent.SetDestination(searchLocation);//go to navigate location
         enemyAnim.SetBool("isWalking", true);
@@ -225,7 +248,11 @@ public class PatrolNavigation : MonoBehaviour
 
     private void EndDelay()
     {
-        agent.speed = defaultSpeed;
+        ///-------------------------------------------------------------------------------------------------------
+        agent.speed = defaultSpeed[1];
+        ///-------------------------------------------------------------------------------------------------------
+        ///
+
         enemyAnim.SetBool("isWalking", true);
     }
 
@@ -234,7 +261,13 @@ public class PatrolNavigation : MonoBehaviour
         agent.ResetPath();
         enemyAnim.SetBool("isWalking", false);
         CancelInvoke();
-        agent.speed = defaultSpeed;
+
+        ///-------------------------------------------------------------------------------------------------------
+        agent.speed = defaultSpeed[0];
+
+        ///-------------------------------------------------------------------------------------------------------
+        ///
+
         suspicionMeter = suspicionMeter - (Time.deltaTime * suspicionRate);//decrease suspicion while searching
         //rotate enemy to search
         agent.transform.eulerAngles = new Vector3(agent.transform.eulerAngles.x, startRot + (60 * Mathf.Sin(Time.timeSinceLevelLoad - startTime)), agent.transform.eulerAngles.z);
@@ -258,6 +291,12 @@ public class PatrolNavigation : MonoBehaviour
         if(Vector3.Distance(agent.transform.position, endPos) > 10)
         {
             agent.SetDestination(endPos);
+
+            ///-------------------------------------------------------------------------------------------------------
+            agent.speed = defaultSpeed[1];
+            ///-------------------------------------------------------------------------------------------------------
+            ///
+
             enemyAnim.SetBool("isWalking", true);
         }
         else
@@ -277,7 +316,13 @@ public class PatrolNavigation : MonoBehaviour
         agent.ResetPath();
         enemyAnim.SetBool("isWalking", false);
         CancelInvoke();
-        agent.speed = defaultSpeed;
+
+        ///-------------------------------------------------------------------------------------------------------
+        agent.speed = defaultSpeed[1];
+
+        ///-------------------------------------------------------------------------------------------------------
+        ///
+
         currentState = EnemyState.Spotting;
         suspicionSound.Play();
     }
@@ -313,7 +358,11 @@ public class PatrolNavigation : MonoBehaviour
         enemyAnim.SetBool("isWalking", false);
         enemyAnim.SetBool("isDizzy", true);
         CancelInvoke();
-        agent.speed = defaultSpeed;
+        ///-------------------------------------------------------------------------------------------------------
+        ///
+        agent.speed = defaultSpeed[1];
+        ///-------------------------------------------------------------------------------------------------------
+        ///
         torchLight.TurnOffTorch();
         torchLight.gameObject.SetActive(false);//turn off torch
         Invoke("MoveToNextWaypoint", stunDuration);//return to patrol
@@ -335,7 +384,12 @@ public class PatrolNavigation : MonoBehaviour
         stunIcon.SetActive(true);
         stunIconMinimap.SetActive(true);
         CancelInvoke();
-        agent.speed = defaultSpeed;
+        ///-------------------------------------------------------------------------------------------------------
+        agent.speed = defaultSpeed[2];
+
+        ///-------------------------------------------------------------------------------------------------------
+        ///
+
         currentState = EnemyState.Stunned;
     }
 
